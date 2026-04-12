@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import FunMode from './FunMode'
+import './funmode.css'
 
 const IK = 'https://ik.imagekit.io/iu69j6qea/MW/'
 
@@ -109,6 +111,46 @@ function FadeIn({ children, className, delay = 0 }) {
   )
 }
 
+const VIDEOS = [
+  { id: 1, title: 'Showreel', description: 'Das Beste in 3 Minuten', embedUrl: '' },
+  { id: 2, title: 'Hamlet – Monolog', description: 'Sein oder Nichtsein, Saarländisches Staatstheater', embedUrl: '' },
+  { id: 3, title: 'Kohlhaas – Szene', description: 'Michael Kohlhaas, Theater Osnabrück', embedUrl: '' },
+  { id: 4, title: 'Musical Reel', description: 'Gesang & Tanz Highlights', embedUrl: '' },
+]
+
+function VideoSection() {
+  const [active, setActive] = useState(0)
+  const v = VIDEOS[active]
+  return (
+    <div className="video-section">
+      <div className="video-tabs">
+        {VIDEOS.map((vid, i) => (
+          <button key={vid.id} className={`video-tab ${i === active ? 'active' : ''}`} onClick={() => setActive(i)}>
+            {vid.title}
+          </button>
+        ))}
+      </div>
+      <FadeIn key={active}>
+        <div className="video-player-wrap">
+          {v.embedUrl ? (
+            <iframe src={v.embedUrl} title={v.title} className="video-iframe" allowFullScreen allow="autoplay" />
+          ) : (
+            <div className="video-placeholder">
+              <span>📽️</span>
+              <p>{v.title}</p>
+              <p className="video-placeholder-hint">Google Drive Video wird hier eingebettet</p>
+            </div>
+          )}
+        </div>
+        <div className="video-info">
+          <h3>{v.title}</h3>
+          <p>{v.description}</p>
+        </div>
+      </FadeIn>
+    </div>
+  )
+}
+
 function RotatingText() {
   const [idx, setIdx] = useState(0)
   useEffect(() => {
@@ -162,6 +204,7 @@ function MarqueeStrip({ items, speed = 30 }) {
 }
 
 export default function App() {
+  const [mode, setMode] = useState('normal') // 'normal' | 'fun'
   const [lightbox, setLightbox] = useState(null)
   const [activeTab, setActiveTab] = useState('Theater')
   const [scrolled, setScrolled] = useState(false)
@@ -183,6 +226,10 @@ export default function App() {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '40%'])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
+  if (mode === 'fun') {
+    return <FunMode onBack={() => { setMode('normal'); window.scrollTo(0, 0) }} />
+  }
+
   return (
     <div className="app">
       {/* NAV */}
@@ -191,8 +238,8 @@ export default function App() {
           MW<span>.</span>
         </div>
         <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
-          {['about', 'gallery', 'career', 'skills', 'contact'].map(id => (
-            <button key={id} onClick={() => scrollTo(id)}>{id === 'about' ? 'Über' : id === 'gallery' ? 'Fotos' : id === 'career' ? 'Vita' : id === 'skills' ? 'Skills' : 'Kontakt'}</button>
+          {['about', 'gallery', 'videos', 'career', 'skills', 'contact'].map(id => (
+            <button key={id} onClick={() => scrollTo(id)}>{id === 'about' ? 'Über' : id === 'gallery' ? 'Fotos' : id === 'videos' ? 'Videos' : id === 'career' ? 'Vita' : id === 'skills' ? 'Skills' : 'Kontakt'}</button>
           ))}
         </div>
         <button className="nav-burger" onClick={() => setMenuOpen(!menuOpen)}>
@@ -216,6 +263,7 @@ export default function App() {
             <div className="hero-cta">
               <button className="btn btn-primary" onClick={() => scrollTo('career')}>Was ich so mache</button>
               <button className="btn btn-ghost" onClick={() => scrollTo('contact')}>Schreib mir</button>
+              <button className="btn btn-fun" onClick={() => { setMode('fun'); window.scrollTo(0, 0) }}>🕹️ Follow the Fun</button>
             </div>
           </motion.div>
         </motion.div>
@@ -294,6 +342,12 @@ export default function App() {
             ))}
           </div>
         </FadeIn>
+      </section>
+
+      {/* VIDEOS */}
+      <section id="videos" className="section">
+        <FadeIn><span className="label">Videos</span><h2 className="heading-lg">In Aktion.<br /><em>(Bewegte Bilder.)</em></h2></FadeIn>
+        <VideoSection />
       </section>
 
       {/* CAREER */}
