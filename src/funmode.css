@@ -56,6 +56,15 @@
   transform: translateY(-2px);
 }
 
+@media (max-width: 600px) {
+  .fun-float-back {
+    top: 4.2rem;
+    right: 1rem;
+    bottom: auto;
+    left: auto;
+  }
+}
+
 /* Godmode badge */
 .fun-godmode-badge {
   font-family: var(--fun-px); font-size: 0.4rem; color: #ff4444;
