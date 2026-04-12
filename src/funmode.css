@@ -55,13 +55,10 @@
   box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
   transform: translateY(-2px);
 }
-
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .fun-float-back {
-    top: 4.2rem;
-    right: 1rem;
-    bottom: auto;
-    left: auto;
+    position: fixed; top: 4rem; right: 0.75rem; bottom: auto;
+    font-size: 0.45rem; padding: 0.5rem 0.8rem;
   }
 }
 
