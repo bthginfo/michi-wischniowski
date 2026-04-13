@@ -112,10 +112,42 @@ function FadeIn({ children, className, delay = 0 }) {
 }
 
 const VIDEOS = [
-  { id: 1, title: 'Showreel', description: 'Das Beste in 3 Minuten', embedUrl: '' },
-  { id: 2, title: 'Hamlet – Monolog', description: 'Sein oder Nichtsein, Saarländisches Staatstheater', embedUrl: '' },
-  { id: 3, title: 'Kohlhaas – Szene', description: 'Michael Kohlhaas, Theater Osnabrück', embedUrl: '' },
-  { id: 4, title: 'Musical Reel', description: 'Gesang & Tanz Highlights', embedUrl: '' },
+  {
+    id: 1,
+    title: 'Draußen vor der Tür',
+    description: 'Beckmann – Saarländisches Staatstheater',
+    embedUrl: 'https://www.youtube.com/embed/DXVHlc3pFx4'
+  },
+  {
+    id: 2,
+    title: 'Peep!',
+    description: 'Puppe zum halben Preis – Saarländisches Staatstheater',
+    embedUrl: 'https://www.youtube.com/embed/Q9tvFBxEaQQ'
+  },
+  {
+    id: 3,
+    title: 'Die Bettwurst',
+    description: 'Das Musical – Saarländisches Staatstheater',
+    embedUrl: 'https://www.youtube.com/embed/xz-MSBiGnpg'
+  },
+  {
+    id: 4,
+    title: 'Hamlet',
+    description: 'Hamlet – Saarländisches Staatstheater',
+    embedUrl: 'https://www.youtube.com/embed/gCmeNvZAzLA'
+  },
+  {
+    id: 5,
+    title: 'Frau Yamamoto ist noch da',
+    description: 'Theater Osnabrück',
+    embedUrl: 'https://www.youtube.com/embed/yFcd2ypYcC8'
+  },
+  {
+    id: 6,
+    title: 'Der große Gatsby',
+    description: 'Jay Gatsby – Theater Osnabrück',
+    embedUrl: 'https://www.youtube.com/embed/QNk8ISDGe90'
+  },
 ]
 
 function VideoSection() {
