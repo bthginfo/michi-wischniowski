@@ -136,6 +136,25 @@
   opacity: 0.45;
   pointer-events: none;
 }
+/* Musik-Auswahl UI auf der Worldmap */
+.fun-music-select {
+  position: absolute; top: 8px; right: 8px; z-index: 40;
+  display: flex; align-items: center; gap: 0.4rem;
+  background: rgba(10,0,24,0.82); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 6px; padding: 4px 8px;
+  backdrop-filter: blur(6px);
+}
+.fun-music-select-label {
+  font-size: 0.85rem; line-height: 1;
+}
+.fun-music-select-dropdown {
+  font-family: var(--fun-px); font-size: 0.4rem;
+  background: transparent; color: #ffd700; border: none; outline: none;
+  cursor: pointer; max-width: 140px;
+}
+.fun-music-select-dropdown option:disabled { color: #555; }
+.fun-music-select-dropdown option { background: #0a0018; color: #ffd700; }
+
 .fun-map-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
 .fun-map-inner { position: relative; width: 100%; height: 100%; transition: transform 0.15s ease-out; will-change: transform; }
 .fun-map-zoom-hint {

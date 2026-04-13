@@ -20,21 +20,101 @@ const NOTES = {
   R: 0, // rest
 }
 
-// Overworld / map theme — upbeat adventure melody
-const MAP_MELODY = [
-  'C4','D4','E4','G4','R','E4','D4','R','C4','R','E4','R','G4','A4','G4','R',
-  'A4','G4','E4','R','D4','R','C4','R','D4','E4','G4','E4','D4','R','R','R',
-  'C4','E4','G4','A4','R','G4','E4','R','D4','E4','D4','C4','R','R','R','R',
-  'E4','R','D4','R','C4','D4','E4','R','G4','R','A4','G4','E4','R','R','R',
-  'C5','R','A4','G4','R','E4','G4','R','A4','G4','E4','D4','C4','R','R','R',
-]
-const MAP_BASS = [
-  'C3','R','C3','R','G3','R','C3','R','E3','R','C3','R','G3','R','G3','R',
-  'F3','R','F3','R','C3','R','E3','R','G3','R','G3','R','C3','R','R','R',
-  'A3','R','A3','R','E3','R','A3','R','G3','R','E3','R','C3','R','R','R',
-  'F3','R','G3','R','C3','R','E3','R','G3','R','F3','R','C3','R','R','R',
-  'C3','R','F3','R','G3','R','E3','R','F3','R','C3','R','C3','R','R','R',
-]
+// Stadt-spezifische Chiptune-Tracks (32bit/retro, lizenzfrei, prozedural)
+const CITY_TRACKS = {
+  hamburg: {
+    title: 'Hamburger Hafenhymne',
+    melody: [
+      'C4','E4','G4','C5','R','G4','E4','C4','R','E4','G4','C5','R','G4','E4','C4',
+      'D4','F4','A4','D5','R','A4','F4','D4','R','F4','A4','D5','R','A4','F4','D4',
+    ],
+    bass: [
+      'C3','R','G3','R','C3','R','G3','R','F3','R','A3','R','F3','R','A3','R',
+      'D3','R','A3','R','D3','R','A3','R','G3','R','B3','R','G3','R','B3','R',
+    ]
+  },
+  essen: {
+    title: 'Folkwang Funk',
+    melody: [
+      'E4','G4','B4','E5','R','B4','G4','E4','R','G4','B4','E5','R','B4','G4','E4',
+      'F4','A4','C5','F5','R','C5','A4','F4','R','A4','C5','F5','R','C5','A4','F4',
+    ],
+    bass: [
+      'E3','R','B3','R','E3','R','B3','R','A3','R','C4','R','A3','R','C4','R',
+      'F3','R','C4','R','F3','R','C4','R','B3','R','D4','R','B3','R','D4','R',
+    ]
+  },
+  bochum: {
+    title: 'Bochumer Beat',
+    melody: [
+      'G4','B4','D5','G5','R','D5','B4','G4','R','B4','D5','G5','R','D5','B4','G4',
+      'A4','C5','E5','A5','R','E5','C5','A4','R','C5','E5','A5','R','E5','C5','A4',
+    ],
+    bass: [
+      'G3','R','D4','R','G3','R','D4','R','C4','R','E4','R','C4','R','E4','R',
+      'A3','R','E4','R','A3','R','E4','R','D4','R','F4','R','D4','R','F4','R',
+    ]
+  },
+  dortmund: {
+    title: 'Dortmunder Dance',
+    melody: [
+      'A4','C5','E5','A5','R','E5','C5','A4','R','C5','E5','A5','R','E5','C5','A4',
+      'B4','D5','F5','B5','R','F5','D5','B4','R','D5','F5','B5','R','F5','D5','B4',
+    ],
+    bass: [
+      'A3','R','E4','R','A3','R','E4','R','D4','R','F4','R','D4','R','F4','R',
+      'B3','R','F4','R','B3','R','F4','R','E4','R','G4','R','E4','R','G4','R',
+    ]
+  },
+  saarbruecken: {
+    title: 'Saarbrücker Suite',
+    melody: [
+      'F4','A4','C5','F5','R','C5','A4','F4','R','A4','C5','F5','R','C5','A4','F4',
+      'G4','B4','D5','G5','R','D5','B4','G4','R','B4','D5','G5','R','D5','B4','G4',
+    ],
+    bass: [
+      'F3','R','C4','R','F3','R','C4','R','B3','R','D4','R','B3','R','D4','R',
+      'G3','R','D4','R','G3','R','D4','R','C4','R','E4','R','C4','R','E4','R',
+    ]
+  },
+  osnabrueck: {
+    title: 'Die Osnabrücker Hymne',
+    melody: [
+      'B4','D5','F5','B5','R','F5','D5','B4','R','D5','F5','B5','R','F5','D5','B4',
+      'C5','E5','G5','C6','R','G5','E5','C5','R','E5','G5','C6','R','G5','E5','C5',
+    ],
+    bass: [
+      'B3','R','F4','R','B3','R','F4','R','E4','R','G4','R','E4','R','G4','R',
+      'C4','R','G4','R','C4','R','G4','R','F4','R','A4','R','F4','R','A4','R',
+    ]
+  },
+  gdansk: {
+    title: 'Gdańsker Groove',
+    melody: [
+      'C5','E5','G5','C6','R','G5','E5','C5','R','E5','G5','C6','R','G5','E5','C5',
+      'D5','F5','A5','D6','R','A5','F5','D5','R','F5','A5','D6','R','A5','F5','D5',
+    ],
+    bass: [
+      'C4','R','G4','R','C4','R','G4','R','F4','R','A4','R','F4','R','A4','R',
+      'D4','R','A4','R','D4','R','A4','R','G4','R','B4','R','G4','R','B4','R',
+    ]
+  },
+  wroclaw: {
+    title: 'Wrocławska Welle',
+    melody: [
+      'D5','F5','A5','D6','R','A5','F5','D5','R','F5','A5','D6','R','A5','F5','D5',
+      'E5','G5','B5','E6','R','B5','G5','E5','R','G5','B5','E6','R','B5','G5','E5',
+    ],
+    bass: [
+      'D4','R','A4','R','D4','R','A4','R','G4','R','B4','R','G4','R','B4','R',
+      'E4','R','B4','R','E4','R','B4','R','A4','R','C5','R','A4','R','C5','R',
+    ]
+  },
+}
+
+// Fallback Map-Theme (wie bisher)
+const MAP_MELODY = CITY_TRACKS.hamburg.melody
+const MAP_BASS = CITY_TRACKS.hamburg.bass
 
 // Battle theme — more intense
 const BATTLE_MELODY = [
@@ -273,9 +353,14 @@ export function MusicProvider({ children }) {
     const ctx = new (window.AudioContext || window.webkitAudioContext)()
     ctxRef.current = ctx
 
-    const bpm = track === 'rhythm' ? 120 : track === 'battle' ? 140 : 130
-    const melody = track === 'rhythm' ? RHYTHM_MELODY : track === 'battle' ? BATTLE_MELODY : MAP_MELODY
-    const bass = track === 'rhythm' ? RHYTHM_BASS : track === 'battle' ? BATTLE_BASS : MAP_BASS
+    let bpm = 130, melody = MAP_MELODY, bass = MAP_BASS
+    if (track === 'rhythm') {
+      bpm = 120; melody = RHYTHM_MELODY; bass = RHYTHM_BASS
+    } else if (track === 'battle') {
+      bpm = 140; melody = BATTLE_MELODY; bass = BATTLE_BASS
+    } else if (CITY_TRACKS[track]) {
+      bpm = 130; melody = CITY_TRACKS[track].melody; bass = CITY_TRACKS[track].bass
+    }
     const eighth = 60 / bpm / 2
     const loopSteps = melody.length
     const loopDuration = loopSteps * eighth
@@ -318,8 +403,12 @@ export function MusicProvider({ children }) {
   // Cleanup on unmount
   useEffect(() => () => stopMusic(), [stopMusic])
 
+  // Exportiere alle verfügbaren Tracks für die UI
+  const availableTracks = Object.entries(CITY_TRACKS).map(([id, t]) => ({ id, title: t.title }))
+  availableTracks.unshift({ id: 'map', title: 'Abenteuer-Theme' })
+
   return (
-    <MusicContext.Provider value={{ musicOn, toggleMusic, switchTrack, currentTrack }}>
+    <MusicContext.Provider value={{ musicOn, toggleMusic, switchTrack, currentTrack, availableTracks }}>
       {children}
     </MusicContext.Provider>
   )

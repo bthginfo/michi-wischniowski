@@ -2914,9 +2914,19 @@ function PixelMapPin({ completed, unlocked, current }) {
 /* ═══════════════════════════════════════
    WORLD MAP (FULLSCREEN HUB)
    ═══════════════════════════════════════ */
+const MUSIC_PREF_KEY = 'michi-music-track'
+
 function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, pathRefs }) {
   const { completed, unlocked } = progress
   const [drawingPaths, setDrawingPaths] = useState(new Set())
+
+  // Musik-Auswahl
+  const { availableTracks, currentTrack, switchTrack } = useMusic()
+  const [selectedTrack, setSelectedTrack] = useState(() => {
+    try { return localStorage.getItem(MUSIC_PREF_KEY) || 'map' } catch { return 'map' }
+  })
+  useEffect(() => { try { localStorage.setItem(MUSIC_PREF_KEY, selectedTrack) } catch {} }, [selectedTrack])
+  useEffect(() => { if (currentTrack !== selectedTrack) switchTrack(selectedTrack) }, [selectedTrack, currentTrack, switchTrack])
 
   // Mobile pinch-zoom & pan
   const [mapTransform, setMapTransform] = useState({ scale: 1, x: 0, y: 0 })
@@ -3000,6 +3010,25 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
     <div className="fun-map" style={{ '--map-bg': 'url(/map.png)' }}
       onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
       onClick={handleDoubleTap}>
+      {/* Musik-Auswahl UI */}
+      <div className="fun-music-select" onClick={e => e.stopPropagation()}>
+        <span className="fun-music-select-label">🎶</span>
+        <select
+          className="fun-music-select-dropdown"
+          value={selectedTrack}
+          onChange={e => setSelectedTrack(e.target.value)}
+        >
+          {availableTracks.map(t => (
+            <option
+              key={t.id}
+              value={t.id}
+              disabled={t.id !== 'map' && !unlocked.includes(t.id)}
+            >
+              {t.id !== 'map' && !unlocked.includes(t.id) ? '🔒 ' : ''}{t.title}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="fun-map-inner" style={{
         transform: `translate(${mapTransform.x}px, ${mapTransform.y}px) scale(${mapTransform.scale})`,
         transformOrigin: 'center center'
@@ -3264,7 +3293,18 @@ function FunModeInner({ onBack }) {
   useEffect(() => {
     if (view === 'saarbruecken') switchTrack('battle')
     else if (view === 'osnabrueck') switchTrack('rhythm')
-    else switchTrack('map')
+    else if (view === 'map') {
+      // Auf Worldmap: User-Auswahl aus localStorage
+      try {
+        const t = localStorage.getItem(MUSIC_PREF_KEY) || 'map'
+        switchTrack(t)
+      } catch { switchTrack('map') }
+    } else {
+      // Beim Betreten einer Stadt: Stadt-spezifischen Track abspielen
+      const cityTrackIds = ['hamburg','essen','bochum','dortmund','saarbruecken','osnabrueck','gdansk','wroclaw']
+      if (cityTrackIds.includes(view)) switchTrack(view)
+      else switchTrack('map')
+    }
   }, [view, switchTrack])
 
   // Konami
