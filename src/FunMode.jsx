@@ -933,18 +933,16 @@ function LevelDialog({ onComplete, completed }) {
    LEVEL: DORTMUND (Dialog + Word Scramble)
    ═══════════════════════════════════════ */
 function LevelDortmund({ onDialogDone, completed, godMode }) {
-  const [phase, setPhase] = useState(completed ? 'done' : 'dialog')
+  const [phase, setPhase] = useState(completed ? 'done' : 'scramble')
   useEffect(() => { if (godMode && !completed) { setPhase('done'); onDialogDone() } }, [godMode])
   return (
     <div>
-      {phase === 'dialog' && <LevelDialog onComplete={() => setPhase('scramble')} completed={false} />}
       {phase === 'scramble' && <LevelWordScramble onComplete={onDialogDone} completed={false} />}
       {phase === 'done' && (
         <div className="fun-lvl-content">
           <div className="fun-done-badge">✅ Level abgeschlossen!</div>
           <div style={{ marginTop: '1rem' }}>
-            <button className="fun-btn fun-btn-small" onClick={() => setPhase('dialog')}>🔄 Story nochmal</button>
-            <button className="fun-btn fun-btn-small" style={{ marginLeft: '0.5rem' }} onClick={() => setPhase('scramble')}>🔄 Wörter nochmal</button>
+            <button className="fun-btn fun-btn-small" onClick={() => setPhase('scramble')}>🔄 Wörter nochmal</button>
           </div>
         </div>
       )}
@@ -3276,15 +3274,13 @@ function AchSidebar({ achs, show, onClose }) {
 const MUSIC_PREF_KEY_TB = 'michi-music-track'
 function TopbarMusicSelect() {
   const { availableTracks, currentTrack, switchTrack } = useMusic()
-  const [sel, setSel] = useState(() => {
-    try { return localStorage.getItem(MUSIC_PREF_KEY_TB) || 'map' } catch { return 'map' }
-  })
-  useEffect(() => { try { localStorage.setItem(MUSIC_PREF_KEY_TB, sel) } catch {} }, [sel])
-  useEffect(() => { if (currentTrack !== sel) switchTrack(sel) }, [sel])
   return (
     <div className="fun-music-select fun-music-select-topbar">
       <span className="fun-music-select-label">🎶</span>
-      <select className="fun-music-select-dropdown" value={sel} onChange={e => setSel(e.target.value)}>
+      <select className="fun-music-select-dropdown" value={currentTrack} onChange={e => {
+        switchTrack(e.target.value)
+        try { localStorage.setItem(MUSIC_PREF_KEY_TB, e.target.value) } catch {}
+      }}>
         {availableTracks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
       </select>
     </div>
