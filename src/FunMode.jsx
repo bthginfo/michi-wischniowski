@@ -2920,11 +2920,9 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
 
   // Musik-Auswahl
   const { availableTracks, currentTrack, switchTrack } = useMusic()
-  const [selectedTrack, setSelectedTrack] = useState(() => {
-    try { return localStorage.getItem(MUSIC_PREF_KEY) || 'map' } catch { return 'map' }
-  })
-  useEffect(() => { try { localStorage.setItem(MUSIC_PREF_KEY, selectedTrack) } catch {} }, [selectedTrack])
-  useEffect(() => { if (currentTrack !== selectedTrack) switchTrack(selectedTrack) }, [selectedTrack, currentTrack, switchTrack])
+  useEffect(() => {
+    try { localStorage.setItem(MUSIC_PREF_KEY, currentTrack) } catch {}
+  }, [currentTrack])
 
   // Mobile pinch-zoom & pan
   const [mapTransform, setMapTransform] = useState({ scale: 1, x: 0, y: 0 })
@@ -3011,17 +3009,12 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
       <span className="fun-music-select-label">🎶</span>
       <select
         className="fun-music-select-dropdown"
-        value={selectedTrack}
-        onChange={e => setSelectedTrack(e.target.value)}
+        value={currentTrack}
+        onChange={e => switchTrack(e.target.value)}
       >
-        {availableTracks.map(t => (
-          <option
-            key={t.id}
-            value={t.id}
-            disabled={t.id !== 'map' && !unlocked.includes(t.id)}
-          >
-            {t.id !== 'map' && !unlocked.includes(t.id) ? '🔒 ' : ''}{t.title}
-          </option>
+        <option value="map">Abenteuer-Theme</option>
+        {availableTracks.filter(t => t.id !== 'map' && unlocked.includes(t.id)).map(t => (
+          <option key={t.id} value={t.id}>{t.title}</option>
         ))}
       </select>
     </div>
@@ -3044,13 +3037,15 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
   const [showPinchHint, setShowPinchHint] = useState(true)
   useEffect(() => { const t = setTimeout(() => setShowPinchHint(false), 4200); return () => clearTimeout(t) }, [])
 
+  // Detect mobile for touch handler separation
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+
   return (
     <div className="fun-map" style={{ '--map-bg': 'url(/map.png)' }}
-      onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
-      onClick={handleDoubleTap}>
+      {...(!isMobile ? { onTouchStart: handleTouchStart, onTouchMove: handleTouchMove, onTouchEnd: handleTouchEnd, onClick: handleDoubleTap } : {})}>
       {/* Musik-Auswahl UI */}
       {MusicDropdown}
-      {showPinchHint && <div className="fun-pinch-hint"><span className="fun-pinch-hint-icon">🤏</span> Pinch to Zoom</div>}
+      {!isMobile && showPinchHint && <div className="fun-pinch-hint"><span className="fun-pinch-hint-icon">🤏</span> Pinch to Zoom</div>}
       <div className="fun-map-inner" style={{
         transform: `translate(${mapTransform.x}px, ${mapTransform.y}px) scale(${mapTransform.scale})`,
         transformOrigin: 'center center'
@@ -3337,7 +3332,7 @@ function AchSidebar({ achs, show, onClose }) {
    TOPBAR MUSIC SELECT (mobile only via CSS)
    ═══════════════════════════════════════ */
 const MUSIC_PREF_KEY_TB = 'michi-music-track'
-function TopbarMusicSelect() {
+function TopbarMusicSelect({ unlocked }) {
   const { availableTracks, currentTrack, switchTrack } = useMusic()
   return (
     <div className="fun-music-select fun-music-select-topbar">
@@ -3346,7 +3341,10 @@ function TopbarMusicSelect() {
         switchTrack(e.target.value)
         try { localStorage.setItem(MUSIC_PREF_KEY_TB, e.target.value) } catch {}
       }}>
-        {availableTracks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
+        <option value="map">Abenteuer-Theme</option>
+        {availableTracks.filter(t => t.id !== 'map' && unlocked.includes(t.id)).map(t => (
+          <option key={t.id} value={t.id}>{t.title}</option>
+        ))}
       </select>
     </div>
   )
@@ -3582,7 +3580,7 @@ function FunModeInner({ onBack }) {
         <div className="fun-topbar-right">
           {godMode && <span className="fun-godmode-badge">🛡️ GOD</span>}
           <MusicToggle />
-          <TopbarMusicSelect />
+          <TopbarMusicSelect unlocked={progress.unlocked} />
           <button className="fun-btn-icon" onClick={() => setShowLB(true)}>📊</button>
           <button className="fun-btn-icon" onClick={() => setShowAch(true)}>🏆<span className="fun-badge">{progress.achievements.length}</span></button>
           <button className="fun-btn-icon" onClick={() => { if (window.confirm('Wirklich allen Fortschritt löschen?')) { localStorage.removeItem(SAVE_KEY); setProgress(loadProgress()); setView('map'); setJustCompleted(null) } }} title="Reset">🔄</button>
