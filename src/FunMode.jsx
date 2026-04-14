@@ -2959,13 +2959,14 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
       e.preventDefault()
       const dx = e.touches[0].clientX - touchRef.current.lastX
       const dy = e.touches[0].clientY - touchRef.current.lastY
+      const maxPan = (mapTransform.scale - 1) * 150
       setMapTransform(t => ({
         ...t,
-        x: Math.max(-200, Math.min(200, touchRef.current.startX + (e.touches[0].clientX - touchRef.current.lastX + touchRef.current.startX - touchRef.current.startX))),
-        y: Math.max(-200, Math.min(200, touchRef.current.startY + (e.touches[0].clientY - touchRef.current.lastY + touchRef.current.startY - touchRef.current.startY)))
+        x: Math.max(-maxPan, Math.min(maxPan, touchRef.current.startX + dx)),
+        y: Math.max(-maxPan, Math.min(maxPan, touchRef.current.startY + dy))
       }))
-      touchRef.current.startX += dx
-      touchRef.current.startY += dy
+      touchRef.current.startX = Math.max(-maxPan, Math.min(maxPan, touchRef.current.startX + dx))
+      touchRef.current.startY = Math.max(-maxPan, Math.min(maxPan, touchRef.current.startY + dy))
       touchRef.current.lastX = e.touches[0].clientX
       touchRef.current.lastY = e.touches[0].clientY
     }
@@ -3028,12 +3029,16 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
     </div>
   );
 
+  const [showPinchHint, setShowPinchHint] = useState(true)
+  useEffect(() => { const t = setTimeout(() => setShowPinchHint(false), 4200); return () => clearTimeout(t) }, [])
+
   return (
     <div className="fun-map" style={{ '--map-bg': 'url(/map.png)' }}
       onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
       onClick={handleDoubleTap}>
       {/* Musik-Auswahl UI */}
       {MusicDropdown}
+      {showPinchHint && <div className="fun-pinch-hint"><span className="fun-pinch-hint-icon">🤏</span> Pinch to Zoom</div>}
       <div className="fun-map-inner" style={{
         transform: `translate(${mapTransform.x}px, ${mapTransform.y}px) scale(${mapTransform.scale})`,
         transformOrigin: 'center center'
