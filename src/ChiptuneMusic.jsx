@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef, useCallback, createContext, useContext } from 'react'
 
 /* ═══════════════════════════════════════
-   8-BIT CHIPTUNE MUSIC ENGINE
-   All music is procedurally generated via Web Audio API.
-   100% license-free — no external audio files.
+   MUSIC ENGINE – Audio File Playback
+   Uses WAV files from public/music/
    ═══════════════════════════════════════ */
 
 const MusicContext = createContext(null)
@@ -12,145 +11,22 @@ export function useMusic() {
   return useContext(MusicContext)
 }
 
-// Note frequencies (C4 = middle C)
-const NOTES = {
-  C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00, B3: 246.94,
-  C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
-  C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00, B5: 987.77,
-  R: 0, // rest
-}
-
-// Stadt-spezifische Chiptune-Tracks (32bit/retro, lizenzfrei, prozedural)
-const CITY_TRACKS = {
-  hamburg: {
-    title: 'Hamburger Hafenhymne',
-    melody: [
-      'C4','E4','G4','C5','R','G4','E4','C4','R','E4','G4','C5','R','G4','E4','C4',
-      'D4','F4','A4','D5','R','A4','F4','D4','R','F4','A4','D5','R','A4','F4','D4',
-    ],
-    bass: [
-      'C3','R','G3','R','C3','R','G3','R','F3','R','A3','R','F3','R','A3','R',
-      'D3','R','A3','R','D3','R','A3','R','G3','R','B3','R','G3','R','B3','R',
-    ]
-  },
-  essen: {
-    title: 'Folkwang Funk',
-    melody: [
-      'E4','G4','B4','E5','R','B4','G4','E4','R','G4','B4','E5','R','B4','G4','E4',
-      'F4','A4','C5','F5','R','C5','A4','F4','R','A4','C5','F5','R','C5','A4','F4',
-    ],
-    bass: [
-      'E3','R','B3','R','E3','R','B3','R','A3','R','C4','R','A3','R','C4','R',
-      'F3','R','C4','R','F3','R','C4','R','B3','R','D4','R','B3','R','D4','R',
-    ]
-  },
-  bochum: {
-    title: 'Bochumer Beat',
-    melody: [
-      'G4','B4','D5','G5','R','D5','B4','G4','R','B4','D5','G5','R','D5','B4','G4',
-      'A4','C5','E5','A5','R','E5','C5','A4','R','C5','E5','A5','R','E5','C5','A4',
-    ],
-    bass: [
-      'G3','R','D4','R','G3','R','D4','R','C4','R','E4','R','C4','R','E4','R',
-      'A3','R','E4','R','A3','R','E4','R','D4','R','F4','R','D4','R','F4','R',
-    ]
-  },
-  dortmund: {
-    title: 'Dortmunder Dance',
-    melody: [
-      'A4','C5','E5','A5','R','E5','C5','A4','R','C5','E5','A5','R','E5','C5','A4',
-      'B4','D5','F5','B5','R','F5','D5','B4','R','D5','F5','B5','R','F5','D5','B4',
-    ],
-    bass: [
-      'A3','R','E4','R','A3','R','E4','R','D4','R','F4','R','D4','R','F4','R',
-      'B3','R','F4','R','B3','R','F4','R','E4','R','G4','R','E4','R','G4','R',
-    ]
-  },
-  saarbruecken: {
-    title: 'Saarbrücker Suite',
-    melody: [
-      'F4','A4','C5','F5','R','C5','A4','F4','R','A4','C5','F5','R','C5','A4','F4',
-      'G4','B4','D5','G5','R','D5','B4','G4','R','B4','D5','G5','R','D5','B4','G4',
-    ],
-    bass: [
-      'F3','R','C4','R','F3','R','C4','R','B3','R','D4','R','B3','R','D4','R',
-      'G3','R','D4','R','G3','R','D4','R','C4','R','E4','R','C4','R','E4','R',
-    ]
-  },
-  osnabrueck: {
-    title: 'Die Osnabrücker Hymne',
-    melody: [
-      'B4','D5','F5','B5','R','F5','D5','B4','R','D5','F5','B5','R','F5','D5','B4',
-      'C5','E5','G5','C6','R','G5','E5','C5','R','E5','G5','C6','R','G5','E5','C5',
-    ],
-    bass: [
-      'B3','R','F4','R','B3','R','F4','R','E4','R','G4','R','E4','R','G4','R',
-      'C4','R','G4','R','C4','R','G4','R','F4','R','A4','R','F4','R','A4','R',
-    ]
-  },
-  gdansk: {
-    title: 'Gdańsker Groove',
-    melody: [
-      'C5','E5','G5','C6','R','G5','E5','C5','R','E5','G5','C6','R','G5','E5','C5',
-      'D5','F5','A5','D6','R','A5','F5','D5','R','F5','A5','D6','R','A5','F5','D5',
-    ],
-    bass: [
-      'C4','R','G4','R','C4','R','G4','R','F4','R','A4','R','F4','R','A4','R',
-      'D4','R','A4','R','D4','R','A4','R','G4','R','B4','R','G4','R','B4','R',
-    ]
-  },
-  wroclaw: {
-    title: 'Wrocławska Welle',
-    melody: [
-      'D5','F5','A5','D6','R','A5','F5','D5','R','F5','A5','D6','R','A5','F5','D5',
-      'E5','G5','B5','E6','R','B5','G5','E5','R','G5','B5','E6','R','B5','G5','E5',
-    ],
-    bass: [
-      'D4','R','A4','R','D4','R','A4','R','G4','R','B4','R','G4','R','B4','R',
-      'E4','R','B4','R','E4','R','B4','R','A4','R','C5','R','A4','R','C5','R',
-    ]
-  },
-}
-
-// Fallback Map-Theme (wie bisher)
-const MAP_MELODY = CITY_TRACKS.hamburg.melody
-const MAP_BASS = CITY_TRACKS.hamburg.bass
-
-// Battle theme — more intense
-const BATTLE_MELODY = [
-  'E4','E4','E4','R','C4','E4','G4','R','G4','R','R','R','C4','R','R','R',
-  'A4','A4','A4','R','G4','F4','E4','R','C4','R','D4','E4','R','R','R','R',
-  'B4','B4','A4','G4','E4','F4','G4','R','A4','R','G4','E4','R','R','R','R',
-  'E4','D4','C4','R','D4','E4','C4','R','D4','R','E4','F4','G4','R','R','R',
-]
-const BATTLE_BASS = [
-  'C3','R','C3','R','C3','R','E3','R','G3','R','R','R','C3','R','R','R',
-  'A3','R','A3','R','G3','R','E3','R','C3','R','D3','E3','R','R','R','R',
-  'B3','R','A3','G3','E3','R','G3','R','A3','R','G3','E3','R','R','R','R',
-  'E3','D3','C3','R','D3','E3','C3','R','D3','R','E3','F3','G3','R','R','R',
+const AUDIO_TRACKS = [
+  { id: 'map',           title: 'Abenteuer-Theme',  file: '/music/The Field.wav' },
+  { id: 'hamburg',       title: 'Hamburg',           file: '/music/Home Town.wav' },
+  { id: 'essen',         title: 'Folkwang Essen',    file: '/music/Medieval City.wav' },
+  { id: 'bochum',        title: 'Bochum',            file: '/music/Rustic Town.wav' },
+  { id: 'dortmund',      title: 'Dortmund',          file: '/music/Damsel Theme.wav' },
+  { id: 'saarbruecken',  title: 'Saarbrücken',       file: '/music/Regular Boss.wav' },
+  { id: 'osnabrueck',    title: 'Osnabrück',         file: '/music/Regular Battle.wav' },
+  { id: 'gdansk',        title: 'Gdańsk',            file: '/music/Win Theme.wav' },
+  { id: 'wroclaw',       title: 'Wrocław',           file: '/music/Villain Theme.wav' },
+  { id: 'bonus',         title: 'Bonus Arena',       file: '/music/Spooky Cave [COMBAT].wav' },
+  { id: 'bonus2',        title: 'Bonus Breakout',    file: '/music/Abandoned Castle.wav' },
 ]
 
-// Rhythm game theme — steady 4/4 beat with clear rhythm hits
-// BPM = 120, each note = 1/8th note = 250ms
-const RHYTHM_MELODY = [
-  'C5','R','E4','R','G4','R','C5','R','B4','R','G4','R','A4','R','B4','R',
-  'C5','R','A4','R','F4','R','A4','R','G4','R','E4','R','D4','R','E4','R',
-  'C5','R','E4','R','G4','R','C5','R','D5','R','C5','R','B4','R','A4','R',
-  'G4','R','A4','R','B4','R','C5','R','D5','R','E5','R','D5','R','C5','R',
-  'E5','R','D5','R','C5','R','B4','R','A4','R','G4','R','A4','R','B4','R',
-  'C5','R','D5','R','E5','R','C5','R','A4','R','G4','R','F4','R','E4','R',
-]
-const RHYTHM_BASS = [
-  'C3','R','C3','R','G3','R','G3','R','C3','R','C3','R','F3','R','G3','R',
-  'A3','R','A3','R','F3','R','F3','R','G3','R','G3','R','G3','R','G3','R',
-  'C3','R','C3','R','G3','R','G3','R','C3','R','C3','R','F3','R','F3','R',
-  'G3','R','G3','R','G3','R','C3','R','D3','R','E3','R','D3','R','C3','R',
-  'C3','R','C3','R','G3','R','G3','R','F3','R','F3','R','F3','R','G3','R',
-  'C3','R','D3','R','E3','R','C3','R','A3','R','G3','R','F3','R','E3','R',
-]
+const getTrackFile = (id) => (AUDIO_TRACKS.find(t => t.id === id) || AUDIO_TRACKS[0]).file
 
-// Rhythm game beat pattern: timestamps where notes should appear (in 8th note indices)
-// Each beat index maps to when a note should be spawned
 export const RHYTHM_BEAT_PATTERN = [
   { time: 0, col: 0 }, { time: 2, col: 1 }, { time: 4, col: 2 }, { time: 6, col: 3 },
   { time: 8, col: 1 }, { time: 10, col: 2 }, { time: 12, col: 0 }, { time: 14, col: 3 },
@@ -166,106 +42,7 @@ export const RHYTHM_BEAT_PATTERN = [
   { time: 88, col: 0 }, { time: 90, col: 1 }, { time: 92, col: 2 }, { time: 94, col: 3 },
 ]
 
-// Drum pattern (kick on 1&3, snare on 2&4, hihat on every 8th)
-function createDrumPattern(ctx, startTime, bpm, bars) {
-  const eighth = 60 / bpm / 2
-  const totalSteps = bars * 8
-  for (let i = 0; i < totalSteps; i++) {
-    const t = startTime + i * eighth
-    // Hi-hat on every step
-    playNoise(ctx, t, 0.02, 0.03, 8000, 0.04)
-    // Kick on beats 1 and 3 (every 4 steps)
-    if (i % 8 === 0 || i % 8 === 4) playKick(ctx, t, 0.08)
-    // Snare on beats 2 and 4
-    if (i % 8 === 2 || i % 8 === 6) playNoise(ctx, t, 0.06, 0.08, 3000, 0.06)
-  }
-}
-
-function playKick(ctx, time, vol) {
-  const osc = ctx.createOscillator()
-  const gain = ctx.createGain()
-  osc.type = 'sine'
-  osc.frequency.setValueAtTime(150, time)
-  osc.frequency.exponentialRampToValueAtTime(30, time + 0.1)
-  gain.gain.setValueAtTime(vol, time)
-  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.15)
-  osc.connect(gain).connect(ctx.destination)
-  osc.start(time)
-  osc.stop(time + 0.15)
-}
-
-function playNoise(ctx, time, vol, duration, filterFreq, attack) {
-  const bufferSize = ctx.sampleRate * duration
-  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
-  const data = buffer.getChannelData(0)
-  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1
-  const source = ctx.createBufferSource()
-  source.buffer = buffer
-  const filter = ctx.createBiquadFilter()
-  filter.type = 'highpass'
-  filter.frequency.value = filterFreq
-  const gain = ctx.createGain()
-  gain.gain.setValueAtTime(0.001, time)
-  gain.gain.linearRampToValueAtTime(vol, time + (attack || 0.005))
-  gain.gain.exponentialRampToValueAtTime(0.001, time + duration)
-  source.connect(filter).connect(gain).connect(ctx.destination)
-  source.start(time)
-  source.stop(time + duration)
-}
-
-function scheduleTrack(ctx, melody, bass, bpm, startTime, loopBars) {
-  const eighth = 60 / bpm / 2
-  const melodyLen = melody.length
-  const bassLen = bass.length
-  const totalSteps = loopBars * 8
-
-  // Schedule melody
-  for (let i = 0; i < Math.min(melodyLen, totalSteps); i++) {
-    const note = melody[i]
-    if (note === 'R' || !NOTES[note]) continue
-    const t = startTime + i * eighth
-    playSquare(ctx, NOTES[note], t, eighth * 0.8, 0.08)
-  }
-
-  // Schedule bass
-  for (let i = 0; i < Math.min(bassLen, totalSteps); i++) {
-    const note = bass[i]
-    if (note === 'R' || !NOTES[note]) continue
-    const t = startTime + i * eighth
-    playTriangle(ctx, NOTES[note], t, eighth * 0.9, 0.1)
-  }
-
-  // Drums
-  createDrumPattern(ctx, startTime, bpm, loopBars)
-}
-
-function playSquare(ctx, freq, time, duration, vol) {
-  const osc = ctx.createOscillator()
-  const gain = ctx.createGain()
-  osc.type = 'square'
-  osc.frequency.value = freq
-  gain.gain.setValueAtTime(vol, time)
-  gain.gain.setValueAtTime(vol, time + duration * 0.7)
-  gain.gain.linearRampToValueAtTime(0, time + duration)
-  osc.connect(gain).connect(ctx.destination)
-  osc.start(time)
-  osc.stop(time + duration + 0.01)
-}
-
-function playTriangle(ctx, freq, time, duration, vol) {
-  const osc = ctx.createOscillator()
-  const gain = ctx.createGain()
-  osc.type = 'triangle'
-  osc.frequency.value = freq
-  gain.gain.setValueAtTime(vol, time)
-  gain.gain.setValueAtTime(vol, time + duration * 0.8)
-  gain.gain.linearRampToValueAtTime(0, time + duration)
-  osc.connect(gain).connect(ctx.destination)
-  osc.start(time)
-  osc.stop(time + duration + 0.01)
-}
-
-/* ═══════ SFX ENGINE ═══════ */
+/* ═══════ SFX ENGINE (Web Audio API) ═══════ */
 let sfxCtx = null
 function getSfxCtx() {
   if (!sfxCtx || sfxCtx.state === 'closed') {
@@ -301,111 +78,81 @@ function sfxNoise(duration, vol = 0.08, filterFreq = 4000) {
   src.start(t); src.stop(t + duration + 0.01)
 }
 
-const SFX = {
-  // Correct / success
+export const SFX = {
   hit_perfect() { sfxTone(880, 0.08); setTimeout(() => sfxTone(1320, 0.1), 60) },
   hit_great()   { sfxTone(660, 0.08); setTimeout(() => sfxTone(880, 0.08), 50) },
   hit_ok()      { sfxTone(440, 0.06) },
   correct()     { sfxTone(523, 0.08); setTimeout(() => sfxTone(659, 0.08), 80); setTimeout(() => sfxTone(784, 0.12), 160) },
   match()       { sfxTone(660, 0.06); setTimeout(() => sfxTone(880, 0.08), 70) },
-  // Errors
   miss()        { sfxTone(180, 0.15, 'sawtooth', 0.1) },
   wrong()       { sfxTone(200, 0.1, 'sawtooth', 0.1); setTimeout(() => sfxTone(160, 0.15, 'sawtooth', 0.1), 100) },
-  // Combat
   player_attack()  { sfxNoise(0.08, 0.12, 2000); sfxTone(300, 0.06, 'sawtooth', 0.08) },
   player_crit()    { sfxNoise(0.12, 0.15, 1500); sfxTone(600, 0.08, 'sawtooth', 0.12); setTimeout(() => sfxTone(900, 0.1), 80) },
   player_heal()    { sfxTone(440, 0.08, 'triangle', 0.12); setTimeout(() => sfxTone(660, 0.1, 'triangle', 0.12), 100); setTimeout(() => sfxTone(880, 0.12, 'triangle', 0.12), 200) },
   player_miss()    { sfxTone(220, 0.12, 'triangle', 0.06) },
   boss_attack()    { sfxTone(120, 0.15, 'sawtooth', 0.12); sfxNoise(0.1, 0.1, 800) },
   boss_heal()      { sfxTone(330, 0.1, 'triangle', 0.1); setTimeout(() => sfxTone(440, 0.12, 'triangle', 0.1), 120) },
-  // Win / lose
   victory()     { [523,659,784,1047].forEach((f, i) => setTimeout(() => sfxTone(f, 0.15, 'square', 0.12), i * 120)) },
   defeat()      { [330,262,220,165].forEach((f, i) => setTimeout(() => sfxTone(f, 0.2, 'triangle', 0.1), i * 150)) },
   level_complete() { [523,659,784,1047,784,1047].forEach((f, i) => setTimeout(() => sfxTone(f, 0.12, 'square', 0.1), i * 100)) },
-  // UI
   unlock()      { sfxTone(440, 0.06, 'square', 0.08); setTimeout(() => sfxTone(880, 0.1, 'square', 0.08), 80) },
   flip()        { sfxTone(600, 0.04, 'square', 0.06) },
   click()       { sfxTone(800, 0.03, 'square', 0.05) },
 }
 
-export { SFX }
+/* ═══════ MUSIC PROVIDER ═══════ */
 
 export function MusicProvider({ children }) {
   const [musicOn, setMusicOn] = useState(false)
-  const [currentTrack, setCurrentTrack] = useState('map') // 'map' | 'battle' | 'rhythm' | null
-  const ctxRef = useRef(null)
-  const loopRef = useRef(null)
+  const [currentTrack, setCurrentTrack] = useState('map')
+  const audioRef = useRef(null)
   const trackRef = useRef('map')
+  const musicOnRef = useRef(false)
 
   const stopMusic = useCallback(() => {
-    if (loopRef.current) clearInterval(loopRef.current)
-    loopRef.current = null
-    if (ctxRef.current && ctxRef.current.state !== 'closed') {
-      ctxRef.current.close().catch(() => {})
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
     }
-    ctxRef.current = null
   }, [])
 
-  const startTrack = useCallback((track) => {
+  const startTrack = useCallback((trackId) => {
     stopMusic()
-    trackRef.current = track
-
-    const ctx = new (window.AudioContext || window.webkitAudioContext)()
-    ctxRef.current = ctx
-
-    let bpm = 130, melody = MAP_MELODY, bass = MAP_BASS
-    if (track === 'rhythm') {
-      bpm = 120; melody = RHYTHM_MELODY; bass = RHYTHM_BASS
-    } else if (track === 'battle') {
-      bpm = 140; melody = BATTLE_MELODY; bass = BATTLE_BASS
-    } else if (CITY_TRACKS[track]) {
-      bpm = 130; melody = CITY_TRACKS[track].melody; bass = CITY_TRACKS[track].bass
+    trackRef.current = trackId
+    const file = getTrackFile(trackId)
+    const audio = new Audio(file)
+    audio.loop = true
+    audio.volume = 0.5
+    audioRef.current = audio
+    if (musicOnRef.current) {
+      audio.play().catch(() => {})
     }
-    const eighth = 60 / bpm / 2
-    const loopSteps = melody.length
-    const loopDuration = loopSteps * eighth
-
-    // Schedule first loop immediately
-    scheduleTrack(ctx, melody, bass, bpm, ctx.currentTime + 0.1, Math.ceil(loopSteps / 8))
-
-    // Schedule subsequent loops
-    let nextSchedule = ctx.currentTime + 0.1 + loopDuration
-    loopRef.current = setInterval(() => {
-      if (!ctxRef.current || ctxRef.current.state === 'closed') {
-        clearInterval(loopRef.current)
-        return
-      }
-      if (ctx.currentTime > nextSchedule - 2) {
-        scheduleTrack(ctx, melody, bass, bpm, nextSchedule, Math.ceil(loopSteps / 8))
-        nextSchedule += loopDuration
-      }
-    }, 1000)
   }, [stopMusic])
 
   const toggleMusic = useCallback(() => {
-    if (musicOn) {
+    if (musicOnRef.current) {
       stopMusic()
+      musicOnRef.current = false
       setMusicOn(false)
     } else {
-      startTrack(trackRef.current)
+      musicOnRef.current = true
       setMusicOn(true)
+      startTrack(trackRef.current)
     }
-  }, [musicOn, startTrack, stopMusic])
+  }, [startTrack, stopMusic])
 
-  const switchTrack = useCallback((track) => {
-    trackRef.current = track
-    setCurrentTrack(track)
-    if (musicOn) {
-      startTrack(track)
+  const switchTrack = useCallback((trackId) => {
+    trackRef.current = trackId
+    setCurrentTrack(trackId)
+    if (musicOnRef.current) {
+      startTrack(trackId)
     }
-  }, [musicOn, startTrack])
+  }, [startTrack])
 
-  // Cleanup on unmount
   useEffect(() => () => stopMusic(), [stopMusic])
 
-  // Exportiere alle verfügbaren Tracks für die UI
-  const availableTracks = Object.entries(CITY_TRACKS).map(([id, t]) => ({ id, title: t.title }))
-  availableTracks.unshift({ id: 'map', title: 'Abenteuer-Theme' })
+  const availableTracks = AUDIO_TRACKS.map(t => ({ id: t.id, title: t.title }))
 
   return (
     <MusicContext.Provider value={{ musicOn, toggleMusic, switchTrack, currentTrack, availableTracks }}>

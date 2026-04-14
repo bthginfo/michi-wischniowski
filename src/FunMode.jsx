@@ -3006,29 +3006,34 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
     prevCompleted.current = completed
   }, [completed])
 
+  // Musik-Dropdown-Element extrahieren
+  const MusicDropdown = (
+    <div className="fun-music-select" onClick={e => e.stopPropagation()}>
+      <span className="fun-music-select-label">🎶</span>
+      <select
+        className="fun-music-select-dropdown"
+        value={selectedTrack}
+        onChange={e => setSelectedTrack(e.target.value)}
+      >
+        {availableTracks.map(t => (
+          <option
+            key={t.id}
+            value={t.id}
+            disabled={t.id !== 'map' && !unlocked.includes(t.id)}
+          >
+            {t.id !== 'map' && !unlocked.includes(t.id) ? '🔒 ' : ''}{t.title}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
   return (
     <div className="fun-map" style={{ '--map-bg': 'url(/map.png)' }}
       onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
       onClick={handleDoubleTap}>
       {/* Musik-Auswahl UI */}
-      <div className="fun-music-select" onClick={e => e.stopPropagation()}>
-        <span className="fun-music-select-label">🎶</span>
-        <select
-          className="fun-music-select-dropdown"
-          value={selectedTrack}
-          onChange={e => setSelectedTrack(e.target.value)}
-        >
-          {availableTracks.map(t => (
-            <option
-              key={t.id}
-              value={t.id}
-              disabled={t.id !== 'map' && !unlocked.includes(t.id)}
-            >
-              {t.id !== 'map' && !unlocked.includes(t.id) ? '🔒 ' : ''}{t.title}
-            </option>
-          ))}
-        </select>
-      </div>
+      {MusicDropdown}
       <div className="fun-map-inner" style={{
         transform: `translate(${mapTransform.x}px, ${mapTransform.y}px) scale(${mapTransform.scale})`,
         transformOrigin: 'center center'
@@ -3257,6 +3262,27 @@ function AchSidebar({ achs, show, onClose }) {
         </>
       )}
     </AnimatePresence>
+  )
+}
+
+/* ═══════════════════════════════════════
+   TOPBAR MUSIC SELECT (mobile only via CSS)
+   ═══════════════════════════════════════ */
+const MUSIC_PREF_KEY_TB = 'michi-music-track'
+function TopbarMusicSelect() {
+  const { availableTracks, currentTrack, switchTrack } = useMusic()
+  const [sel, setSel] = useState(() => {
+    try { return localStorage.getItem(MUSIC_PREF_KEY_TB) || 'map' } catch { return 'map' }
+  })
+  useEffect(() => { try { localStorage.setItem(MUSIC_PREF_KEY_TB, sel) } catch {} }, [sel])
+  useEffect(() => { if (currentTrack !== sel) switchTrack(sel) }, [sel])
+  return (
+    <div className="fun-music-select fun-music-select-topbar">
+      <span className="fun-music-select-label">🎶</span>
+      <select className="fun-music-select-dropdown" value={sel} onChange={e => setSel(e.target.value)}>
+        {availableTracks.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
+      </select>
+    </div>
   )
 }
 
@@ -3490,6 +3516,7 @@ function FunModeInner({ onBack }) {
         <div className="fun-topbar-right">
           {godMode && <span className="fun-godmode-badge">🛡️ GOD</span>}
           <MusicToggle />
+          <TopbarMusicSelect />
           <button className="fun-btn-icon" onClick={() => setShowLB(true)}>📊</button>
           <button className="fun-btn-icon" onClick={() => setShowAch(true)}>🏆<span className="fun-badge">{progress.achievements.length}</span></button>
           <button className="fun-btn-icon" onClick={() => { if (window.confirm('Wirklich allen Fortschritt löschen?')) { localStorage.removeItem(SAVE_KEY); setProgress(loadProgress()); setView('map'); setJustCompleted(null) } }} title="Reset">🔄</button>

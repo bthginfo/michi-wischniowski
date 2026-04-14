@@ -258,6 +258,7 @@ export default function App() {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '40%'])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
+
   if (mode === 'fun') {
     return <FunMode onBack={() => { setMode('normal'); window.scrollTo(0, 0) }} />
   }
