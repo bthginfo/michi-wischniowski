@@ -3027,6 +3027,20 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
     </div>
   );
 
+  // Mobile stepper: navigate between unlocked nodes
+  const nodeOrder = MAP_NODES.filter(n => unlocked.includes(n.id))
+  const [stepperIdx, setStepperIdx] = useState(() => {
+    const idx = nodeOrder.findIndex(n => n.id === michiPos)
+    return idx >= 0 ? idx : 0
+  })
+  useEffect(() => {
+    const idx = nodeOrder.findIndex(n => n.id === michiPos)
+    if (idx >= 0) setStepperIdx(idx)
+  }, [michiPos, nodeOrder.length])
+
+  const stepperNode = nodeOrder[stepperIdx] || nodeOrder[0]
+  const stepperSwipeRef = useRef(null)
+
   const [showPinchHint, setShowPinchHint] = useState(true)
   useEffect(() => { const t = setTimeout(() => setShowPinchHint(false), 4200); return () => clearTimeout(t) }, [])
 
@@ -3129,6 +3143,57 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
         )
       })()}
       </div>
+
+      {/* Mobile stepper UI */}
+      {stepperNode && (
+        <div className="fun-mobile-stepper"
+          onTouchStart={e => { if (e.touches.length === 1) stepperSwipeRef.current = e.touches[0].clientX }}
+          onTouchEnd={e => {
+            if (stepperSwipeRef.current == null) return
+            const diff = e.changedTouches[0].clientX - stepperSwipeRef.current
+            stepperSwipeRef.current = null
+            if (diff > 50 && stepperIdx > 0) setStepperIdx(i => i - 1)
+            else if (diff < -50 && stepperIdx < nodeOrder.length - 1) setStepperIdx(i => i + 1)
+          }}>
+          <div className="fun-stepper-map-mini" style={{ '--map-bg': 'url(/map.png)' }}>
+            <div className="fun-stepper-dot" style={{ left: `${stepperNode.x}%`, top: `${stepperNode.y}%` }} />
+          </div>
+          <div className="fun-stepper-nav">
+            <button className="fun-stepper-arrow" disabled={stepperIdx === 0}
+              onClick={() => setStepperIdx(i => i - 1)}>‹</button>
+            <motion.div className="fun-stepper-card" key={stepperNode.id}
+              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <span className="fun-stepper-icon">{stepperNode.icon}</span>
+              <span className="fun-stepper-name">{stepperNode.name}</span>
+              <span className="fun-stepper-label">{stepperNode.label}</span>
+              {completed.includes(stepperNode.id)
+                ? <span className="fun-stepper-status done">✅ Abgeschlossen</span>
+                : michiPos === stepperNode.id
+                  ? <span className="fun-stepper-status">📍 Michi ist hier</span>
+                  : <span className="fun-stepper-status">—</span>
+              }
+              <button className="fun-btn fun-btn-primary fun-btn-enter fun-stepper-enter"
+                onClick={() => {
+                  if (michiPos !== stepperNode.id) onMoveToNode(stepperNode.id)
+                  else onEnterLevel(stepperNode.id)
+                }}>
+                {michiPos === stepperNode.id
+                  ? (completed.includes(stepperNode.id) ? '🔄 Nochmal' : '▶ Betreten')
+                  : '🚶 Hingehen'}
+              </button>
+            </motion.div>
+            <button className="fun-stepper-arrow" disabled={stepperIdx >= nodeOrder.length - 1}
+              onClick={() => setStepperIdx(i => i + 1)}>›</button>
+          </div>
+          <div className="fun-stepper-dots">
+            {nodeOrder.map((n, i) => (
+              <span key={n.id} className={`${i === stepperIdx ? 'active' : ''} ${completed.includes(n.id) ? 'completed' : ''}`}
+                onClick={() => setStepperIdx(i)} />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Zoom hint for mobile */}
       {mapTransform.scale > 1 && (
         <div className="fun-map-zoom-hint">Doppeltippen zum Zurücksetzen</div>
