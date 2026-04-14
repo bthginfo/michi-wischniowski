@@ -167,15 +167,16 @@
 }
 .fun-stepper-map-mini {
   position: relative; width: 100%; aspect-ratio: 3/2;
-  border-radius: 8px; overflow: hidden; opacity: 0.4;
-  max-height: 30vh;
+  border-radius: 8px; overflow: hidden;
+  max-height: 35vh;
+  border: 1px solid rgba(255,255,255,0.12);
 }
 .fun-stepper-map-mini::before {
   content: ''; position: absolute; inset: 0;
   background-image: var(--map-bg);
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  filter: brightness(0.6);
+  opacity: 0.45;
 }
 .fun-stepper-dot {
   position: absolute; width: 14px; height: 14px;
@@ -183,7 +184,30 @@
   border-radius: 50%; transform: translate(-50%, -50%);
   box-shadow: 0 0 12px var(--fun-accent), 0 0 24px var(--fun-accent);
   z-index: 2;
-  transition: left 0.4s ease, top 0.4s ease;
+  transition: left 0.6s ease, top 0.6s ease;
+}
+/* Michi sprite on mini-map */
+.fun-stepper-michi {
+  position: absolute; z-index: 3;
+  transform: translate(-50%, -100%);
+  transition: left 0.6s ease, top 0.6s ease;
+  pointer-events: none;
+}
+.fun-stepper-michi.walking .fun-michi-leg.left { animation: legWalkL 0.25s steps(1) infinite; }
+.fun-stepper-michi.walking .fun-michi-leg.right { animation: legWalkR 0.25s steps(1) infinite; }
+/* Current city node on mini-map */
+.fun-stepper-city-node {
+  position: absolute; z-index: 2;
+  transform: translate(-50%, -50%);
+  transition: left 0.6s ease, top 0.6s ease;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  pointer-events: none;
+}
+.fun-stepper-city-icon { font-size: 1.2rem; filter: drop-shadow(0 0 6px rgba(0,255,136,0.6)); }
+.fun-stepper-city-name {
+  font-family: var(--fun-px); font-size: 0.3rem; color: #fff;
+  background: rgba(0,0,0,0.7); padding: 1px 5px; border-radius: 3px;
+  white-space: nowrap;
 }
 .fun-stepper-nav {
   display: flex; align-items: center; gap: 0.8rem; width: 100%;

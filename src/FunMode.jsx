@@ -3033,6 +3033,8 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
 
   const stepperNode = nodeOrder[stepperIdx] || nodeOrder[0]
   const stepperSwipeRef = useRef(null)
+  const [michiWalking, setMichiWalking] = useState(false)
+  const michiPosNode = getNode(michiPos)
 
   const [showPinchHint, setShowPinchHint] = useState(true)
   useEffect(() => { const t = setTimeout(() => setShowPinchHint(false), 4200); return () => clearTimeout(t) }, [])
@@ -3151,6 +3153,30 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
             else if (diff < -50 && stepperIdx < nodeOrder.length - 1) setStepperIdx(i => i + 1)
           }}>
           <div className="fun-stepper-map-mini" style={{ '--map-bg': 'url(/map.png)' }}>
+            {/* Current city node */}
+            {stepperNode && (
+              <div className="fun-stepper-city-node" style={{ left: `${stepperNode.x}%`, top: `${stepperNode.y}%` }}>
+                <span className="fun-stepper-city-icon">{stepperNode.icon}</span>
+                <span className="fun-stepper-city-name">{stepperNode.name}</span>
+              </div>
+            )}
+            {/* Michi sprite */}
+            {michiPosNode && (
+              <div className={`fun-stepper-michi ${michiWalking ? 'walking' : ''}`}
+                style={{ left: `${michiPosNode.x}%`, top: `${michiPosNode.y}%` }}>
+                <div className={`fun-michi-bounce ${michiWalking ? '' : 'idle'}`}>
+                  <div className="fun-michi-char">
+                    <div className="fun-michi-head" />
+                    <div className="fun-michi-body" />
+                    <div className="fun-michi-legs">
+                      <div className="fun-michi-leg left" />
+                      <div className="fun-michi-leg right" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* Position dot */}
             <div className="fun-stepper-dot" style={{ left: `${stepperNode.x}%`, top: `${stepperNode.y}%` }} />
           </div>
           <div className="fun-stepper-nav">
@@ -3169,8 +3195,13 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
               }
               <button className="fun-btn fun-btn-primary fun-btn-enter fun-stepper-enter"
                 onClick={() => {
-                  if (michiPos !== stepperNode.id) onMoveToNode(stepperNode.id)
-                  else onEnterLevel(stepperNode.id)
+                  if (michiPos !== stepperNode.id) {
+                    setMichiWalking(true)
+                    onMoveToNode(stepperNode.id)
+                    setTimeout(() => setMichiWalking(false), 700)
+                  } else {
+                    onEnterLevel(stepperNode.id)
+                  }
                 }}>
                 {michiPos === stepperNode.id
                   ? (completed.includes(stepperNode.id) ? '🔄 Nochmal' : '▶ Betreten')
