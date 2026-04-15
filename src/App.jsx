@@ -471,7 +471,7 @@ export default function App() {
             <h2 className="heading-lg center">Lass uns<br /><em>was machen.</em></h2>
             <p className="body-text center">Casting, Zusammenarbeit oder einfach Hallo sagen.</p>
             <div className="contact-buttons">
-              <a href="https://www.schauspielervideos.de/fullprofile/michi-wischniowski.html" target="_blank" rel="noopener noreferrer" className="btn btn-primary">Profil auf Schauspielervideos.de</a>
+              <a href="https://www.filmmakers.eu/de/actors/michi-wischniowski" target="_blank" rel="noopener noreferrer" className="btn btn-primary">Profil auf Filmmakers.eu</a>
               <a href="mailto:kontakt@michiwischniowski.de" className="btn btn-ghost">E-Mail schreiben</a>
             </div>
           </div>
