@@ -1524,28 +1524,28 @@ function LevelRhythm({ onComplete, highScore, godMode }) {
    LEVEL: DECKBUILDER CARD GAME (Slay the Spire style)
    ═══════════════════════════════════════ */
 const DECK_CARDS = [
-  { id: 0, name: 'Monolog-Kraft', img: IMAGES[0], type: 'attack', dmg: 12, cost: 1, trivia: 'Michi studierte Schauspiel in Bochum.', desc: '12 Schaden' },
-  { id: 1, name: 'Bühnen-Präsenz', img: IMAGES[1], type: 'attack', dmg: 8, cost: 1, trivia: 'Michi stand schon in über 30 Produktionen.', desc: '8 Schaden, +4 Block' , block: 4 },
-  { id: 2, name: 'Improvisation', img: IMAGES[2], type: 'attack', dmg: 18, cost: 2, trivia: 'Michi kann auch Bariton singen.', desc: '18 Schaden' },
-  { id: 3, name: 'Lampenfieber', img: IMAGES[3], type: 'skill', cost: 1, block: 10, trivia: 'Typischer Trait: Lampenfieber = Fokus.', desc: '+10 Block' },
-  { id: 4, name: 'Pferde-Sprint', img: IMAGES[4], type: 'attack', dmg: 6, cost: 0, trivia: 'Michi spielte tatsächlich ein Pferd auf der Bühne!', desc: '6 Schaden (kostenlos)' },
-  { id: 5, name: 'Totenkopf-Monolog', img: IMAGES[5], type: 'attack', dmg: 25, cost: 3, trivia: 'Hamlet war eine seiner Paraderolle.', desc: '25 Schaden' },
-  { id: 6, name: 'Kritiker-Schild', img: IMAGES[6], type: 'skill', cost: 1, block: 8, draw: 1, trivia: 'Michi bekam stets gute Kritiken.', desc: '+8 Block, +1 Karte ziehen' },
-  { id: 7, name: 'Ensemblegeist', img: IMAGES[7], type: 'skill', cost: 1, heal: 8, trivia: 'Teamwork ist alles auf der Bühne.', desc: '+8 HP heilen' },
-  { id: 8, name: 'Spotlight', img: IMAGES[8], type: 'attack', dmg: 10, cost: 1, vulnerable: 2, trivia: 'Im Rampenlicht fühlt Michi sich am wohlsten.', desc: '10 Schaden, 2 Verwundbar' },
-  { id: 9, name: 'Vorhang zu!', img: IMAGES[9], type: 'attack', dmg: 15, cost: 2, trivia: 'Das Finale ist immer das Stärkste.', desc: '15 Schaden' },
-  { id: 10, name: 'Souffleur-Hilfe', img: IMAGES[10], type: 'skill', cost: 0, draw: 2, trivia: 'Den Text vergessen? Der Souffleur hilft!', desc: '+2 Karten ziehen' },
-  { id: 11, name: 'Applaus', img: IMAGES[11], type: 'skill', cost: 2, block: 15, heal: 5, trivia: 'Applaus gibt Energie und Schutz.', desc: '+15 Block, +5 HP' },
-  { id: 12, name: 'Doppelrolle', img: IMAGES[12], type: 'attack', dmg: 10, cost: 1, trivia: 'Michi spielte auch mal zwei Rollen gleichzeitig.', desc: '10 Schaden ×2', hits: 2 },
+  { id: 0, name: 'Stark im Ensemble', img: 'Borderline Prozession 01 - Foto Birgit Hupfeld.jpg', type: 'attack', dmg: 2, cost: 1, trivia: 'Die Borderline Prozession, R: Kay Voges, Foto: Birgit Hupfeld', desc: '2 Schaden x6', hits: 6 },
+  { id: 1, name: 'Stampede', img: 'Gatsby (2022) 01 - Foto Astrid Karger.jpg', type: 'attack', dmg: 8, cost: 1, trivia: 'Der große Gatsby (2022), R: Bettina Bruinier, Foto: Astrid Karger', desc: '8 Schaden, +4 Block', block: 4 },
+  { id: 2, name: 'Ein Ende machen', img: 'Ratten 01 - Foto Martin Kaufhold.jpg', type: 'attack', dmg: 18, cost: 2, trivia: 'Die Ratten, R: Julia Prechsl, Foto: Martin Kaufhold', desc: '18 Schaden' },
+  { id: 3, name: 'Ich kann’s tragen', img: 'Geizige 01 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 1, block: 10, trivia: 'Der Geizige, R: Matthias Rippert, Foto: Martin Kaufhold', desc: '+10 Block' },
+  { id: 4, name: 'GERONIMO!!!', img: 'Kohlhaas 03 - Foto Uwe Lewandowski.jpg', type: 'attack', dmg: 6, cost: 0, trivia: 'Kohlhaas (Glück der Erde, Rücken der Pferde), R: Lorenz Nolting, Foto: Uwe Lewandowski', desc: '6 Schaden (kostenlos)' },
+  { id: 5, name: 'Bombenauftritt', img: 'Draussen vor der Tuer 01 - Foto Martin Kaufhold.jpg', type: 'attack', dmg: 25, cost: 3, trivia: 'Draußen vor der Tür, R: Philipp Preuss, Foto: Martin Kaufhold', desc: '25 Schaden' },
+  { id: 6, name: 'Text büffeln', img: 'Spieler und Tod 02 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 1, block: 8, draw: 1, trivia: 'Spieler und Tod, R: Thorsten Köhler, Foto: Martin Kaufhold', desc: '+8 Block, +1 Karte ziehen' },
+  { id: 7, name: 'Bandagieren', img: 'Bakchen 01 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 1, heal: 8, trivia: 'Die Bakchen, R: Redjep Hajder, Foto: Martin Kaufhold', desc: '+8 HP heilen' },
+  { id: 8, name: 'Ausstrahlen', img: 'Trueffel 01 - Foto Julia Prechsl.jpg', type: 'attack', dmg: 10, cost: 1, vulnerable: 2, trivia: 'Trüffel, Trüffel, Trüffel, R: Julia Prechsl, Foto: Julia Prechsl', desc: '10 Schaden, 2 Verwundbar' },
+  { id: 9, name: 'Drama, Drama!', img: 'Bettwurst 01 - Foto Martin Kaufhold.jpg', type: 'attack', dmg: 15, cost: 2, trivia: 'Die Bettwurst - Das Musical, R: Paul Spittler, Foto: Martin Kaufhold', desc: '15 Schaden' },
+  { id: 10, name: 'Zugpferd', img: 'Kohlhaas 02 - Foto Uwe Lewandowski.jpg', type: 'skill', cost: 0, draw: 2, trivia: 'Kohlhaas (Glück der Erde, Rücken der Pferde), R: Lorenz Nolting, Foto: Uwe Lewandowski', desc: '+2 Karten ziehen' },
+  { id: 11, name: 'Sich erden', img: 'Draussen vor der Tuer 03 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 2, block: 15, heal: 5, trivia: 'Draußen vor der Tür, R: Philipp Preuss, Foto: Martin Kaufhold', desc: '+15 Block, +5 HP' },
+  { id: 12, name: 'Doppelrolle', img: 'Spieler und Tod 01 - Foto Martin Kaufhold.jpg', type: 'attack', dmg: 10, cost: 1, trivia: 'Spieler und Tod, R: Thorsten Köhler, Foto: Martin Kaufhold', desc: '10 Schaden ×2', hits: 2 },
 ]
 
 const DECK_SPECIAL_CARDS = [
-  { id: 'sp1', name: 'Standing Ovations', img: IMAGES[6], type: 'skill', cost: 1, block: 14, heal: 6, trivia: 'Publikumsliebe trägt durch schwierige Szenen.', desc: '+14 Block, +6 HP' },
-  { id: 'sp2', name: 'Szenenrausch', img: IMAGES[8], type: 'attack', dmg: 22, cost: 2, draw: 1, trivia: 'Wenn es läuft, läuft alles.', desc: '22 Schaden, +1 Karte' },
-  { id: 'sp3', name: 'Präzisionspause', img: IMAGES[10], type: 'skill', cost: 0, vulnerable: 1, draw: 1, trivia: 'Der richtige Beat im richtigen Moment.', desc: '1 Verwundbar, +1 Karte' },
-  { id: 'sp4', name: 'Finale Wucht', img: IMAGES[11], type: 'attack', dmg: 30, cost: 3, block: 8, trivia: 'Das große Ende mit Absicherung.', desc: '30 Schaden, +8 Block' },
-  { id: 'sp5', name: 'Textsicherheit', img: IMAGES[1], type: 'skill', cost: 1, draw: 2, block: 6, trivia: 'Der Text sitzt, die Haltung auch.', desc: '+2 Karten, +6 Block' },
-  { id: 'sp6', name: 'Publikumsfokus', img: IMAGES[3], type: 'attack', dmg: 16, cost: 1, vulnerable: 2, trivia: 'Ein Blick und der Gegner wankt.', desc: '16 Schaden, 2 Verwundbar' },
+  { id: 'sp1', name: 'Absage erteilen', img: 'Oedipus Exzellenz 01 - Foto Sofie Boiten.jpg', type: 'skill', cost: 1, block: 14, heal: 6, trivia: 'Ödipus Exzellenz, von Lorenz Nolting, Sofie Boiten, Karl Haucke, Foto: Sofie Boiten', desc: '+14 Block, +6 HP' },
+  { id: 'sp2', name: 'Roaring 20', img: 'Gatsby (2024) - Foto Joseph Ruben.jpg', type: 'attack', dmg: 20, cost: 2, draw: 1, trivia: 'Der große Gatsby (2024), R: Julia Prechsl, Foto: Joseph Ruben', desc: '20 Schaden, +1 Karte' },
+  { id: 'sp3', name: 'Urschrei', img: 'Draussen vor der Tuer 02 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 0, vulnerable: 1, draw: 1, trivia: 'Draußen vor der Tür, R: Philipp Preuss, Foto: Martin Kaufhold', desc: '1 Verwundbar, +1 Karte' },
+  { id: 'sp4', name: 'Raddoppio', img: 'Hamlet 01 - Foto Astrid Karger.jpg', type: 'attack', dmg: 30, cost: 3, block: 8, trivia: 'Hamlet, R: Bettina Bruinier, Foto: Astrid Karger', desc: '30 Schaden, +8 Block' },
+  { id: 'sp5', name: 'Neuer Versuch', img: 'Yamamoto 01 - Foto Joseph Ruben.jpg', type: 'skill', cost: 1, draw: 2, block: 6, trivia: 'Frau Yamamoto ist noch da, R: Alina Fluck, Foto: Joseph Ruben', desc: '+2 Karten, +6 Block' },
+  { id: 'sp6', name: 'Scharf denken', img: 'Wiener Wald 01.jpg', type: 'attack', dmg: 16, cost: 1, vulnerable: 2, trivia: 'Geschichten aus dem Wiener Wald, R: Anne-Kathrine Münnich', desc: '16 Schaden, 2 Verwundbar' },
 ]
 
 const DECK_BOSSES = [

@@ -20,6 +20,26 @@ const IMAGES = [
   '353ddc37-b6eb-455a-abd2-11d07c317824.avif',
   '3c77e527-eaa4-4dde-bb3f-1b5f09c22ef3.avif',
   '9369310e-1ebd-4a1c-ae02-a1f52958680e.avif',
+  // Neue Galerie-Bilder
+  'Bakchen 01 - Foto Martin Kaufhold.jpg',
+  'Bettwurst 01 - Foto Martin Kaufhold..jpg',
+  'Borderline Prozession 01 - Foto Birgit Hupfeld.jpg',
+  'Draussen vor der Tuer 01 - Foto Martin Kaufhold.jpg',
+  'Draussen vor der Tuer 02 - Foto Martin Kaufhold.jpg',
+  'Draussen vor der Tuer 03 - Foto Martin Kaufhold.jpg',
+  'Gatsby (2022) 01 - Foto Astrid Karger.jpg',
+  'Geizige 01 - Foto Martin Kaufhold.jpg',
+  'Hamlet 01 - Foto Astrid Karger.jpg',
+  'Kohlhaas 02 - Foto Uwe Lewandowski.jpg',
+  'Kohlhaas 03 - Foto Uwe Lewandowski.jpg',
+  'Oedipus Exzellenz 01 - Foto Sofie Boiten.jpg',
+  'Ratten 01 - Foto Martin Kaufhold.jpg',
+  'Spieler und Tod 01 - Foto Martin Kaufhold.jpg.jpg',
+  'Spieler und Tod 02 - Foto Martin Kaufhold.jpg.jpg',
+  'Trueffel 01 - Foto Julia Prechsl.jpg',
+  'Wiener Wald 01.jpg',
+  'Yamamoto 01 - Foto Joseph Ruben.jpg',
+  'Gatsby (2024) - Foto Joseph Ruben.jpg',
 ]
 
 const HERO_LINES = [
