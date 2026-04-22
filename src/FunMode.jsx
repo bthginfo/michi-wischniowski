@@ -1049,8 +1049,24 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
   const [charIdx, setCharIdx] = useState(0)
   const [showChoices, setShowChoices] = useState(false)
   const [ending, setEnding] = useState(null)
+  const [imgTransition, setImgTransition] = useState(0) // 0 = before image, 1 = after image
 
   useEffect(() => { if (godMode && !completed) { setPhase('done'); onDialogDone() } }, [godMode])
+
+  // Crossfade from "before" to "after" image over 4 seconds on mount
+  useEffect(() => {
+    if (phase === 'date' || phase === 'response') {
+      const start = Date.now()
+      const duration = 4000
+      const tick = () => {
+        const elapsed = Date.now() - start
+        const progress = Math.min(1, elapsed / duration)
+        setImgTransition(progress)
+        if (progress < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }
+  }, []) // only on mount
 
   const scene = THEATER_DATE_SCENES[sceneIdx]
   const displayText = phase === 'response' ? response : (scene?.text || '')
@@ -1127,9 +1143,9 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
       <div className="fun-lvl-content fun-dialog-lvl" style={{ maxWidth: '640px', margin: '0 auto' }}>
         <AffectionMeter />
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <motion.img src={`${IK}Dortmund.png?tr=w-300,h-300,fo-auto`} alt="Schauspielhaus"
+          <motion.img src={`${IK}Dortmund%20after.png?tr=w-500,h-500,fo-auto`} alt="Schauspielhaus"
             initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-            style={{ width: '100px', height: '100px', objectFit: 'contain', borderRadius: '16px' }} />
+            style={{ width: '160px', height: '160px', objectFit: 'contain', borderRadius: '16px' }} />
         </div>
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           style={{ background: 'rgba(255,255,255,0.07)', borderRadius: '16px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
@@ -1144,14 +1160,17 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
   return (
     <div className="fun-lvl-content fun-dialog-lvl" style={{ maxWidth: '640px', margin: '0 auto' }}>
       <AffectionMeter />
-      {/* Theater portrait */}
+      {/* Theater portrait with crossfade */}
       <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
         <motion.div
           animate={phase === 'response' ? { y: [0, -4, 0], rotate: [0, -1.5, 1.5, 0] } : { y: [0, -3, 0] }}
           transition={phase === 'response' ? { duration: 0.5 } : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ display: 'inline-block', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '8px', border: '2px solid rgba(255,255,255,0.1)' }}
+          style={{ display: 'inline-block', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', padding: '10px', border: '2px solid rgba(255,255,255,0.1)', position: 'relative', width: '220px', height: '220px' }}
         >
-          <img src={`${IK}Dortmund.png?tr=w-400,h-400,fo-auto`} alt="Schauspielhaus Dortmund" style={{ width: '160px', height: '160px', objectFit: 'contain', borderRadius: '12px', display: 'block' }} />
+          <img src={`${IK}Dortmund%20before.png?tr=w-500,h-500,fo-auto`} alt="Schauspielhaus Dortmund"
+            style={{ width: '200px', height: '200px', objectFit: 'contain', borderRadius: '14px', display: 'block', position: 'absolute', top: '10px', left: '10px', opacity: 1 - imgTransition }} />
+          <img src={`${IK}Dortmund%20after.png?tr=w-500,h-500,fo-auto`} alt="Schauspielhaus Dortmund"
+            style={{ width: '200px', height: '200px', objectFit: 'contain', borderRadius: '14px', display: 'block', position: 'absolute', top: '10px', left: '10px', opacity: imgTransition }} />
         </motion.div>
         <div style={{ marginTop: '0.4rem' }}>
           <span style={{ fontWeight: 'bold', fontSize: '0.9rem', opacity: 0.7 }}>{scene?.speaker}</span>
