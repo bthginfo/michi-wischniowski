@@ -1729,7 +1729,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
     setBBlock(0)
     setBVulnerable(0)
     setTurn(1)
-    setLog([`${boss.sprite} ${boss.name} betritt die Bühne!`])
+    setLog([`⚔️ ${boss.name} betritt die Bühne!`])
     rollBossIntent(boss)
   }
 
@@ -1815,7 +1815,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
       if (intent.heal) {
         SFX.boss_heal()
         setBHp(h => Math.min(currentBoss.hp, h + intent.heal))
-        addLog(`${currentBoss.sprite} ${intent.name} — heilt ${intent.heal} HP!`)
+        addLog(`⚔️ ${intent.name} — heilt ${intent.heal} HP!`)
       }
       if (intent.dmg > 0) {
         SFX.boss_attack()
@@ -1831,7 +1831,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
         setPBlock(0) // block resets each turn
         setPHp(newPHp)
         shake(dmg >= 15 ? 8 : 4, 300)
-        addLog(`${currentBoss.sprite} ${intent.name} — ${dmg} Schaden! ${intent.desc}`)
+        addLog(`⚔️ ${intent.name} — ${dmg} Schaden! ${intent.desc}`)
 
         if (newPHp <= 0) {
           SFX.defeat()
@@ -1841,7 +1841,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
           return
         }
       } else if (!intent.heal) {
-        addLog(`${currentBoss.sprite} ${intent.name} — ${intent.desc}`)
+        addLog(`⚔️ ${intent.name} — ${intent.desc}`)
       }
 
       // Vulnerable tick
@@ -1898,7 +1898,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
                   className={`fun-btn fun-btn-small ${bossStage === idx ? 'fun-btn-primary' : ''}`}
                   onClick={() => setBossStage(idx)}
                 >
-                  {b.sprite} {b.name}
+                  {b.sprite.endsWith('.png') ? <img src={`${IK}${b.sprite}`} alt="" style={{ width: '1.2em', height: '1.2em', objectFit: 'contain', verticalAlign: 'middle', marginRight: '0.3em' }} /> : b.sprite === 'against_the_system' ? <span style={{ fontFamily: 'monospace', fontSize: '0.8em', marginRight: '0.3em' }}>{'</>'}</span> : <span>{b.sprite} </span>}{b.name}
                 </button>
               ))}
             </div>
