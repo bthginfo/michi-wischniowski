@@ -1124,44 +1124,87 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
 
   if (phase === 'ending' && ending) {
     return (
-      <div className="fun-lvl-content fun-dialog-lvl">
+      <div className="fun-lvl-content fun-dialog-lvl" style={{ maxWidth: '640px', margin: '0 auto' }}>
         <AffectionMeter />
-        <motion.div className="fun-dialog-box" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-          <h3 style={{ marginBottom: '0.6rem', fontSize: '1.2rem' }}>{ending.title}</h3>
-          <div className="fun-dialog-text" style={{ whiteSpace: 'pre-line', lineHeight: 1.6 }}>{ending.text}</div>
+        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          <motion.img src={`${IK}Dortmund.png?tr=w-300,h-300,fo-auto`} alt="Schauspielhaus"
+            initial={{ scale: 0.8 }} animate={{ scale: 1 }}
+            style={{ width: '100px', height: '100px', objectFit: 'contain', borderRadius: '16px' }} />
+        </div>
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+          style={{ background: 'rgba(255,255,255,0.07)', borderRadius: '16px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+          <h3 style={{ marginBottom: '0.8rem', fontSize: '1.3rem' }}>{ending.title}</h3>
+          <div style={{ whiteSpace: 'pre-line', lineHeight: 1.7, fontSize: '0.95rem', opacity: 0.9 }}>{ending.text}</div>
         </motion.div>
-        <button className="fun-btn fun-btn-primary" style={{ marginTop: '1rem' }} onClick={() => setPhase('done')}>▶ Weiter</button>
+        <button className="fun-btn fun-btn-primary" style={{ marginTop: '1.2rem', width: '100%' }} onClick={() => setPhase('done')}>▶ Weiter</button>
       </div>
     )
   }
 
   return (
-    <div className="fun-lvl-content fun-dialog-lvl">
+    <div className="fun-lvl-content fun-dialog-lvl" style={{ maxWidth: '640px', margin: '0 auto' }}>
       <AffectionMeter />
-      <div className="fun-dating-scene">
-        <div className="fun-dating-theater" style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <motion.div animate={{ rotate: phase === 'response' ? [0, -2, 2, 0] : 0 }} transition={{ duration: 0.5 }}>
-            <img src={`${IK}Dortmund.png?tr=w-200,h-200,fo-auto`} alt="Schauspielhaus Dortmund" style={{ width: '120px', height: '120px', objectFit: 'contain', borderRadius: '12px' }} />
+      <div className="fun-dating-scene" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', marginBottom: '0.8rem' }}>
+        {/* Theater portrait */}
+        <div style={{ flexShrink: 0, textAlign: 'center' }}>
+          <motion.div
+            animate={phase === 'response' ? { y: [0, -4, 0], rotate: [0, -1.5, 1.5, 0] } : { y: [0, -3, 0] }}
+            transition={phase === 'response' ? { duration: 0.5 } : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '6px', border: '2px solid rgba(255,255,255,0.1)' }}
+          >
+            <img src={`${IK}Dortmund.png?tr=w-300,h-300,fo-auto`} alt="Schauspielhaus Dortmund" style={{ width: '100px', height: '100px', objectFit: 'contain', borderRadius: '12px', display: 'block' }} />
           </motion.div>
-          <div style={{ fontWeight: 'bold', fontSize: '0.9rem', opacity: 0.7, marginTop: '0.3rem' }}>{scene?.speaker} {scene?.mood}</div>
+          <div style={{ marginTop: '0.4rem', fontSize: '0.75rem', fontWeight: 'bold', opacity: 0.6 }}>{scene?.speaker}</div>
+          <div style={{ fontSize: '1.2rem' }}>{scene?.mood}</div>
         </div>
-        <div className="fun-dialog-box" onClick={phase === 'response' ? advanceFromResponse : skipText}>
-          <div className="fun-dialog-text" style={{ minHeight: '3rem' }}>{shown}{charIdx < displayText.length && <span className="fun-cursor">▌</span>}</div>
+        {/* Dialog bubble */}
+        <motion.div
+          key={`${sceneIdx}-${phase}`}
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={phase === 'response' ? advanceFromResponse : skipText}
+          style={{
+            flex: 1, background: 'rgba(255,255,255,0.07)', borderRadius: '16px', padding: '1rem 1.2rem',
+            border: '1px solid rgba(255,255,255,0.1)', position: 'relative', cursor: 'pointer', minHeight: '80px',
+            display: 'flex', flexDirection: 'column', justifyContent: 'center'
+          }}
+        >
+          <div style={{ fontSize: '0.7rem', fontWeight: 'bold', opacity: 0.4, marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            {scene?.speaker}
+          </div>
+          <div style={{ fontSize: '0.95rem', lineHeight: 1.6 }}>
+            {shown}{charIdx < displayText.length && <span className="fun-cursor">▌</span>}
+          </div>
           {phase === 'response' && charIdx >= displayText.length && (
-            <div className="fun-dialog-hint">▶ Weiter</div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginTop: '0.6rem', fontSize: '0.75rem', opacity: 0.5, textAlign: 'right' }}>
+              ▶ Tippe zum Fortfahren
+            </motion.div>
           )}
-        </div>
-        {phase === 'date' && showChoices && (
-          <motion.div className="fun-dating-choices" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.8rem' }}>
-            {scene.choices.map((c, i) => (
-              <motion.button key={i} className="fun-btn fun-dating-choice" whileHover={{ scale: 1.02, x: 4 }} whileTap={{ scale: 0.98 }}
-                onClick={() => handleChoice(c)} style={{ textAlign: 'left', padding: '0.6rem 1rem', fontSize: '0.85rem' }}>
-                {c.text}
-              </motion.button>
-            ))}
-          </motion.div>
-        )}
+        </motion.div>
       </div>
+      {/* Choices */}
+      {phase === 'date' && showChoices && (
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ fontSize: '0.7rem', opacity: 0.4, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>Wähle eine Antwort:</div>
+          {scene.choices.map((c, i) => (
+            <motion.button key={i} className="fun-btn"
+              whileHover={{ scale: 1.01, x: 6, backgroundColor: 'rgba(255,255,255,0.12)' }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => handleChoice(c)}
+              style={{
+                textAlign: 'left', padding: '0.7rem 1rem', fontSize: '0.85rem', lineHeight: 1.5,
+                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '12px', display: 'flex', gap: '0.6rem', alignItems: 'flex-start',
+                transition: 'all 0.2s ease'
+              }}>
+              <span style={{ opacity: 0.4, fontWeight: 'bold', fontSize: '0.75rem', marginTop: '0.1rem', flexShrink: 0 }}>{i + 1}.</span>
+              <span>{c.text}</span>
+            </motion.button>
+          ))}
+        </motion.div>
+      )}
     </div>
   )
 }
