@@ -1144,45 +1144,41 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
   return (
     <div className="fun-lvl-content fun-dialog-lvl" style={{ maxWidth: '640px', margin: '0 auto' }}>
       <AffectionMeter />
-      <div className="fun-dating-scene" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', marginBottom: '0.8rem' }}>
-        {/* Theater portrait */}
-        <div style={{ flexShrink: 0, textAlign: 'center' }}>
-          <motion.div
-            animate={phase === 'response' ? { y: [0, -4, 0], rotate: [0, -1.5, 1.5, 0] } : { y: [0, -3, 0] }}
-            transition={phase === 'response' ? { duration: 0.5 } : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '6px', border: '2px solid rgba(255,255,255,0.1)' }}
-          >
-            <img src={`${IK}Dortmund.png?tr=w-300,h-300,fo-auto`} alt="Schauspielhaus Dortmund" style={{ width: '100px', height: '100px', objectFit: 'contain', borderRadius: '12px', display: 'block' }} />
-          </motion.div>
-          <div style={{ marginTop: '0.4rem', fontSize: '0.75rem', fontWeight: 'bold', opacity: 0.6 }}>{scene?.speaker}</div>
-          <div style={{ fontSize: '1.2rem' }}>{scene?.mood}</div>
-        </div>
-        {/* Dialog bubble */}
+      {/* Theater portrait */}
+      <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
         <motion.div
-          key={`${sceneIdx}-${phase}`}
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-          onClick={phase === 'response' ? advanceFromResponse : skipText}
-          style={{
-            flex: 1, background: 'rgba(255,255,255,0.07)', borderRadius: '16px', padding: '1rem 1.2rem',
-            border: '1px solid rgba(255,255,255,0.1)', position: 'relative', cursor: 'pointer', minHeight: '80px',
-            display: 'flex', flexDirection: 'column', justifyContent: 'center'
-          }}
+          animate={phase === 'response' ? { y: [0, -4, 0], rotate: [0, -1.5, 1.5, 0] } : { y: [0, -3, 0] }}
+          transition={phase === 'response' ? { duration: 0.5 } : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ display: 'inline-block', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '8px', border: '2px solid rgba(255,255,255,0.1)' }}
         >
-          <div style={{ fontSize: '0.7rem', fontWeight: 'bold', opacity: 0.4, marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            {scene?.speaker}
-          </div>
-          <div style={{ fontSize: '0.95rem', lineHeight: 1.6 }}>
-            {shown}{charIdx < displayText.length && <span className="fun-cursor">▌</span>}
-          </div>
-          {phase === 'response' && charIdx >= displayText.length && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginTop: '0.6rem', fontSize: '0.75rem', opacity: 0.5, textAlign: 'right' }}>
-              ▶ Tippe zum Fortfahren
-            </motion.div>
-          )}
+          <img src={`${IK}Dortmund.png?tr=w-400,h-400,fo-auto`} alt="Schauspielhaus Dortmund" style={{ width: '160px', height: '160px', objectFit: 'contain', borderRadius: '12px', display: 'block' }} />
         </motion.div>
+        <div style={{ marginTop: '0.4rem' }}>
+          <span style={{ fontWeight: 'bold', fontSize: '0.9rem', opacity: 0.7 }}>{scene?.speaker}</span>
+          <span style={{ fontSize: '1.2rem', marginLeft: '0.4rem' }}>{scene?.mood}</span>
+        </div>
       </div>
+      {/* Dialog bubble */}
+      <motion.div
+        key={`${sceneIdx}-${phase}`}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        onClick={phase === 'response' ? advanceFromResponse : skipText}
+        style={{
+          width: '100%', background: 'rgba(255,255,255,0.07)', borderRadius: '16px', padding: '1rem 1.2rem',
+          border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', minHeight: '80px', marginBottom: '0.8rem'
+        }}
+      >
+        <div style={{ fontSize: '0.95rem', lineHeight: 1.6 }}>
+          {shown}{charIdx < displayText.length && <span className="fun-cursor">▌</span>}
+        </div>
+        {phase === 'response' && charIdx >= displayText.length && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginTop: '0.6rem', fontSize: '0.75rem', opacity: 0.5, textAlign: 'right' }}>
+            ▶ Tippe zum Fortfahren
+          </motion.div>
+        )}
+      </motion.div>
       {/* Choices */}
       {phase === 'date' && showChoices && (
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
