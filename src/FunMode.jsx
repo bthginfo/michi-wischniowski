@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+﻿import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useParticleSystem, ParticleOverlay, useScreenShake, FloatingText, ComboMeter, RunnerBackground } from './PixiEffects'
 import { MusicProvider, MusicToggle, useMusic, RHYTHM_BEAT_PATTERN, SFX } from './ChiptuneMusic'
@@ -32,8 +32,8 @@ const MAP_NODES = [
   { id: 'bonus',        name: 'Bonus',           icon: '⭐', x: 45, y: 50, unlocks: [], levelType: 'survivor', label: 'Survival Arena (Optional)' },
   { id: 'dortmund',     name: 'Dortmund',        icon: '🎭', x: 17, y: 55, unlocks: ['saarbruecken'], levelType: 'dialog', label: 'Worträtsel' },
   { id: 'saarbruecken', name: 'Saarbrücken',     icon: '⚔️', x: 5, y: 75, unlocks: ['osnabrueck'], levelType: 'bossbattle', label: 'Boss Arena' },
-  { id: 'osnabrueck',   name: 'Osnabrück',       icon: '🐴', x: 15, y: 35, unlocks: ['gdansk'], levelType: 'rhythm', label: 'Bühnen-Beat' },
-  { id: 'gdansk',       name: 'Gdańsk',          icon: '🃏', x: 75, y: 25, unlocks: ['wroclaw', 'bonus2'], levelType: 'deckbuilder', label: 'Kartenkampf' },
+  { id: 'osnabrueck',   name: 'Osnabrück',       icon: '🃏', x: 15, y: 35, unlocks: ['gdansk'], levelType: 'deckbuilder', label: 'Kartenkampf' },
+  { id: 'gdansk',       name: 'Gdańsk',          icon: '🐴', x: 75, y: 25, unlocks: ['wroclaw', 'bonus2'], levelType: 'rhythm', label: 'Bühnen-Beat' },
   { id: 'bonus2',       name: 'Bonus 2',         icon: '🧱', x: 55, y: 55, unlocks: [], levelType: 'bittrip', label: 'Breakout (Optional)' },
   { id: 'wroclaw',      name: 'Wrocław',         icon: '📚', x: 65, y: 45, unlocks: [], levelType: 'finalboss', label: 'Final Boss' },
 ]
@@ -269,19 +269,19 @@ const LEVEL_STORIES = {
     ]
   },
   osnabrueck: {
-    title: '🐴 Osnabrück – Theater am Domhof',
+    title: '🃏 Osnabrück – Fast wieder Zuhause',
     lines: [
-      'Osnabrück! Das Theater am Domhof wird zur neuen Heimat.',
-      'Kohlhaas – und Michi spielt DAS PFERD. Wer braucht schon Würde, wenn man Applaus hat?',
-      'Renne über die Bühne, sammel Requisiten und weiche den Kritikern aus!'
+      'Willkommen in Osnabrück,\nHier werden mitunter die schwersten Kämpfe ausgefochten.\nDies ist die vorerst letzte Station.',
+      'Die Sprache zu bezwingen ist nicht einfach, außer du hast die richtigen Asse im Ärmel. Nutze\ndein Repertoire weise. Im Kampf mit den Sprachmonstern.',
+      'Über das Spiel:\nStelle dir ein Kartendeck aus 7 Karten zusammen. Dir stehen immer 3 zur Wahl. Mit diesen Karten\nwirst du kämpfen.\nAchte im Kampf stets auf dein Mana⚡ . Jede Karte verbraucht unterschiedlich viel davon. Du\nkannst jede Runde bis zu 3⚡ einsetzen.'
     ]
   },
   gdansk: {
-    title: '🏠 Gdańsk – Zurück zu den Wurzeln',
+    title: '🐴 Gdańsk – Zurück zu den Wurzeln',
     lines: [
       'Gdańsk, die Perle an der Ostsee. Michis polnische Wurzeln liegen hier.',
       'Zwischen zwei Kulturen aufgewachsen – Deutsch und Polnisch fließend, die Seele immer unterwegs.',
-      'Entdecke Michis Fotogalerie und sammle alle Erinnerungen!'
+      'Renne über die Bühne, sammel Requisiten und weiche den Kritikern aus!'
     ]
   },
   bonus2: {
@@ -1530,13 +1530,13 @@ const DECK_CARDS = [
   { id: 3, name: 'Ich kann’s tragen', img: 'Geizige 01 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 1, block: 10, trivia: 'Der Geizige, R: Matthias Rippert, Foto: Martin Kaufhold', desc: '+10 Block' },
   { id: 4, name: 'GERONIMO!!!', img: 'Kohlhaas 03 - Foto Uwe Lewandowski.jpg', type: 'attack', dmg: 6, cost: 0, trivia: 'Kohlhaas (Glück der Erde, Rücken der Pferde), R: Lorenz Nolting, Foto: Uwe Lewandowski', desc: '6 Schaden (kostenlos)' },
   { id: 5, name: 'Bombenauftritt', img: 'Draussen vor der Tuer 01 - Foto Martin Kaufhold.jpg', type: 'attack', dmg: 25, cost: 3, trivia: 'Draußen vor der Tür, R: Philipp Preuss, Foto: Martin Kaufhold', desc: '25 Schaden' },
-  { id: 6, name: 'Text büffeln', img: 'Spieler und Tod 02 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 1, block: 8, draw: 1, trivia: 'Spieler und Tod, R: Thorsten Köhler, Foto: Martin Kaufhold', desc: '+8 Block, +1 Karte ziehen' },
+  { id: 6, name: 'Text büffeln', img: 'Spieler und Tod 02 - Foto Martin Kaufhold.jpg.jpg', type: 'skill', cost: 1, block: 8, draw: 1, trivia: 'Spieler und Tod, R: Thorsten Köhler, Foto: Martin Kaufhold', desc: '+8 Block, +1 Karte ziehen' },
   { id: 7, name: 'Bandagieren', img: 'Bakchen 01 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 1, heal: 8, trivia: 'Die Bakchen, R: Redjep Hajder, Foto: Martin Kaufhold', desc: '+8 HP heilen' },
   { id: 8, name: 'Ausstrahlen', img: 'Trueffel 01 - Foto Julia Prechsl.jpg', type: 'attack', dmg: 10, cost: 1, vulnerable: 2, trivia: 'Trüffel, Trüffel, Trüffel, R: Julia Prechsl, Foto: Julia Prechsl', desc: '10 Schaden, 2 Verwundbar' },
-  { id: 9, name: 'Drama, Drama!', img: 'Bettwurst 01 - Foto Martin Kaufhold.jpg', type: 'attack', dmg: 15, cost: 2, trivia: 'Die Bettwurst - Das Musical, R: Paul Spittler, Foto: Martin Kaufhold', desc: '15 Schaden' },
+  { id: 9, name: 'Drama, Drama!', img: 'Bettwurst 01 - Foto Martin Kaufhold..jpg', type: 'attack', dmg: 15, cost: 2, trivia: 'Die Bettwurst - Das Musical, R: Paul Spittler, Foto: Martin Kaufhold', desc: '15 Schaden' },
   { id: 10, name: 'Zugpferd', img: 'Kohlhaas 02 - Foto Uwe Lewandowski.jpg', type: 'skill', cost: 0, draw: 2, trivia: 'Kohlhaas (Glück der Erde, Rücken der Pferde), R: Lorenz Nolting, Foto: Uwe Lewandowski', desc: '+2 Karten ziehen' },
   { id: 11, name: 'Sich erden', img: 'Draussen vor der Tuer 03 - Foto Martin Kaufhold.jpg', type: 'skill', cost: 2, block: 15, heal: 5, trivia: 'Draußen vor der Tür, R: Philipp Preuss, Foto: Martin Kaufhold', desc: '+15 Block, +5 HP' },
-  { id: 12, name: 'Doppelrolle', img: 'Spieler und Tod 01 - Foto Martin Kaufhold.jpg', type: 'attack', dmg: 10, cost: 1, trivia: 'Spieler und Tod, R: Thorsten Köhler, Foto: Martin Kaufhold', desc: '10 Schaden ×2', hits: 2 },
+  { id: 12, name: 'Doppelrolle', img: 'Spieler und Tod 01 - Foto Martin Kaufhold.jpg.jpg', type: 'attack', dmg: 10, cost: 1, trivia: 'Spieler und Tod, R: Thorsten Köhler, Foto: Martin Kaufhold', desc: '10 Schaden ×2', hits: 2 },
 ]
 
 const DECK_SPECIAL_CARDS = [
@@ -1551,80 +1551,80 @@ const DECK_SPECIAL_CARDS = [
 const DECK_BOSSES = [
   {
     id: 'intendant',
-    name: 'Der Intendant',
-    sprite: '🎩',
+    name: 'MolYEAH',
+    sprite: 'molyeah.png',
     hp: 110,
     attacks: [
-      { name: 'Budget-Kürzung', dmg: 12, desc: 'Streicht dein Budget!' },
-      { name: 'Vernichtende Kritik', dmg: 18, desc: 'Deine Leistung wird zerrissen!' },
-      { name: 'Besetzungs-Wechsel', dmg: 10, block: 12, desc: 'Blockt und greift an!' },
-      { name: 'Probe ansetzen', dmg: 0, heal: 14, desc: 'Heilt sich!' },
-      { name: 'Stück absetzen', dmg: 24, desc: 'HEAVY HIT! Das tut weh!' },
+      { name: 'Frohsinn', dmg: 12, desc: 'Ha-ha-ha' },
+      { name: 'Der Boden ist L\'Avare', dmg: 18, desc: 'Watch your step!' },
+      { name: 'La Mega Flash', dmg: 10, block: 12, desc: 'Flasht einfach mega' },
+      { name: 'Merry End', dmg: 0, heal: 14, desc: 'Weil\'s so schön ist' },
+      { name: 'Bühnentod', dmg: 24, desc: 'Yeah, yeah, Molière' },
     ],
   },
   {
     id: 'kritiker',
-    name: 'Der Kritiker',
-    sprite: '🧐',
+    name: 'Rich Chiller',
+    sprite: 'rich_chiller.png',
     hp: 130,
     attacks: [
-      { name: 'Spitze Feder', dmg: 16, desc: 'Ein scharfes Urteil!' },
-      { name: 'Verriss', dmg: 20, desc: 'Das Publikum schwankt.' },
-      { name: 'Fußnote', dmg: 11, block: 14, desc: 'Kommentar plus Schutz.' },
-      { name: 'Kolumne', dmg: 0, heal: 16, desc: 'Schreibt sich wieder stark.' },
-      { name: 'Leitartikel', dmg: 26, desc: 'Ein vernichtender Leittext!' },
+      { name: 'Slap', dmg: 16, desc: 'Es ist seine Hand' },
+      { name: 'WALTHER Drive-By', dmg: 20, desc: 'Piff Paff' },
+      { name: 'Limousinen Flex', dmg: 11, block: 14, desc: 'Die Limo ist mad' },
+      { name: 'Milford Fokus', dmg: 0, heal: 16, desc: 'Brumm Brumm' },
+      { name: 'Kabale', dmg: 26, desc: 'Der Mensch ist nur da ganz Mensch, wo er die Ulti einsetzt' },
     ],
   },
   {
     id: 'dramaturgin',
-    name: 'Die Dramaturgin',
-    sprite: '📚',
+    name: "Kill'em Gravespeare",
+    sprite: 'killem_gravespeare.png',
     hp: 150,
     attacks: [
-      { name: 'Strukturbruch', dmg: 18, desc: 'Der rote Faden reißt.' },
-      { name: 'Textfassung', dmg: 14, block: 16, desc: 'Kürzt dich aus der Szene.' },
-      { name: 'Generalprobe', dmg: 22, desc: 'Unter Druck wird es ernst.' },
-      { name: 'Überarbeitung', dmg: 0, heal: 18, desc: 'Alles wird neu gesetzt.' },
-      { name: 'Premierenfassung', dmg: 30, desc: 'Finale Fassung, voller Wucht!' },
+      { name: 'Geisterstunde', dmg: 18, desc: 'Die Zeit ist aus den Fugen' },
+      { name: "Heitres und nasses Aug'", dmg: 14, block: 16, desc: 'Etwas ist faul' },
+      { name: 'Pfeil und Schleudern', dmg: 22, desc: 'Die Attacke ist unerträglich' },
+      { name: 'Rosenkranz', dmg: 0, heal: 18, desc: "Support vom Ew'gen" },
+      { name: 'Nichtsein!', dmg: 30, desc: 'Der Rest ist Schweigen' },
     ],
   },
   {
     id: 'regisseur',
-    name: 'Der Regisseur',
-    sprite: '🎬',
+    name: 'Against the System',
+    sprite: 'against_the_system',
     hp: 170,
     attacks: [
-      { name: 'Noch mal!', dmg: 20, desc: 'Du musst die Szene wiederholen.' },
-      { name: 'Lauter!', dmg: 24, desc: 'Direktion mit Nachdruck.' },
-      { name: 'Umbesetzung', dmg: 16, block: 20, desc: 'Räumt auf und rüstet auf.' },
-      { name: 'Inszenierung', dmg: 0, heal: 20, desc: 'Setzt das Bild neu.' },
-      { name: 'Schlussapplaus', dmg: 34, desc: 'Die letzte Ansage sitzt.' },
+      { name: 'Stack Overflow', dmg: 20, desc: 'Zu viel Rekursion. Dein Kopf raucht.' },
+      { name: 'Force Push', dmg: 24, desc: 'Überschreibt deine komplette Timeline.' },
+      { name: 'Firewall', dmg: 16, block: 20, desc: 'Zugriff verweigert. Port geschlossen.' },
+      { name: 'Patch Notes', dmg: 0, heal: 20, desc: 'Hotfix deployt. Systemintegrität wiederhergestellt.' },
+      { name: 'rm -rf /', dmg: 34, desc: 'FATAL ERROR: Alles wird gelöscht!' },
     ],
   },
   {
     id: 'hausgeist',
-    name: 'Der Inspizient',
-    sprite: '👻',
+    name: 'Heinrich von Nice',
+    sprite: 'heinrich_von_nice.png',
     hp: 190,
     attacks: [
-      { name: 'Falscher Einsatz', dmg: 22, desc: 'Du bist zu früh dran.' },
-      { name: 'Requisiten-Alarm', dmg: 26, desc: 'Wo ist das Schwert?!' },
-      { name: 'Umbau im Dunkeln', dmg: 18, block: 22, desc: 'Bühne chaosfest gemacht.' },
-      { name: 'Funkdurchsage', dmg: 0, heal: 22, desc: 'Koordiniert alles hinter den Kulissen.' },
-      { name: 'Vorhang-Katastrophe', dmg: 38, desc: 'Der Vorhang fällt... auf dich!' },
+      { name: 'Nowelle', dmg: 22, desc: 'Er hat Flow' },
+      { name: 'Wittenberg burnt!', dmg: 26, desc: 'Er liebt Rappen wie Kohlhaas' },
+      { name: 'Kraut Control', dmg: 18, block: 22, desc: 'Krauts sind gefährlich' },
+      { name: 'Mike Drop', dmg: 0, heal: 22, desc: 'Seine Lines punchen dergestalt, dass dir die Birne davonfliegt' },
+      { name: 'Schachtelsatz', dmg: 38, desc: 'Er macht einen sehr langen Satz auf dich zu' },
     ],
   },
   {
     id: 'premierenmonster',
-    name: 'Das Premierenmonster',
-    sprite: '🩸',
+    name: 'The Zelda',
+    sprite: 'the_zeldas.png',
     hp: 220,
     attacks: [
-      { name: 'Panikwelle', dmg: 24, desc: 'Nervosität überall.' },
-      { name: 'Totale Überforderung', dmg: 30, desc: 'Die Nerven liegen blank.' },
-      { name: 'Lampenfieber-Spike', dmg: 20, block: 24, desc: 'Greift an und verhärtet sich.' },
-      { name: 'Applausfresser', dmg: 0, heal: 25, desc: 'Saugt Energie aus dem Raum.' },
-      { name: 'Premierenkollaps', dmg: 44, desc: 'Der härteste Schlag des Abends!' },
+      { name: 'Once Again', dmg: 24, desc: 'Hiiiiiiiiiiya' },
+      { name: 'A Drink to the Past', dmg: 30, desc: 'So we beat on, boats against the current, borne back ceaselessly by the song of storms' },
+      { name: 'The Shiek', dmg: 20, block: 24, desc: 'Weil eine Persönlichkeit nicht ausreicht' },
+      { name: "Ooccoo's Light", dmg: 0, heal: 25, desc: 'Ein grünes Leuchten füllt den Raum' },
+      { name: 'Buchanandorf Punch', dmg: 44, desc: 'How brute!' },
     ],
   },
 ]
@@ -1943,7 +1943,15 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
           <motion.div className="fun-deck-boss-sprite"
             animate={animating ? { x: [0, -10, 10, 0] } : {}}
             transition={{ duration: 0.3 }}>
-            <span style={{ fontSize: '4rem' }}>{currentBoss.sprite}</span>
+            {currentBoss.sprite.endsWith('.png') ? (
+              <img src={`${IK}${currentBoss.sprite}`} alt={currentBoss.name} style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
+            ) : currentBoss.sprite === 'against_the_system' ? (
+              <div className="fun-deck-boss-code" style={{ width: '120px', height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace', fontSize: '0.65rem', color: '#0f0', background: '#111', borderRadius: '12px', overflow: 'hidden', lineHeight: 1.4, whiteSpace: 'pre', textAlign: 'left', padding: '8px' }}>
+                <div style={{ animation: 'codeScroll 4s linear infinite' }}>{'while(true) {\n  crash(actor);\n  reboot();\n  repeat();\n}\nif(hope) {\n  return false;\n}\n// no escape\nrm -rf /stage\nsegfault();'}</div>
+              </div>
+            ) : (
+              <span style={{ fontSize: '4rem' }}>{currentBoss.sprite}</span>
+            )}
           </motion.div>
           <div className="fun-deck-boss-stats">
             <span className="fun-deck-boss-name">{currentBoss.name}</span>
@@ -3413,7 +3421,7 @@ function FunModeInner({ onBack }) {
   // Switch music track based on current view
   useEffect(() => {
     if (view === 'saarbruecken') switchTrack('battle')
-    else if (view === 'osnabrueck') switchTrack('rhythm')
+    else if (view === 'osnabrueck') switchTrack('battle')
     else if (view === 'map') {
       // Auf Worldmap: User-Auswahl aus localStorage
       try {
@@ -3574,10 +3582,10 @@ function FunModeInner({ onBack }) {
   const handleRhythmDone = (score) => {
     if (score >= 100) addAch('rhythm_100')
     addXp(Math.floor(score / 5))
-    if (score >= 80) completeLevel('osnabrueck')
+    if (score >= 80) completeLevel('gdansk')
     setProgress(p => ({ ...p, runnerHigh: Math.max(p.runnerHigh, score) }))
   }
-  const handleDeckbuilderWin = () => { addXp(40); addAch('deckbuilder_win'); completeLevel('gdansk') }
+  const handleDeckbuilderWin = () => { addXp(40); addAch('deckbuilder_win'); completeLevel('osnabrueck') }
   const handleDeckbuilderBossUnlock = (stage) => {
     setProgress(p => ({ ...p, deckBossStage: Math.max(p.deckBossStage || 0, stage) }))
   }
@@ -3640,8 +3648,7 @@ function FunModeInner({ onBack }) {
               {view === 'dortmund' && <LevelDortmund onDialogDone={handleDialogDone} completed={progress.completed.includes('dortmund')} godMode={godMode} />}
               {view === 'bochum' && <LevelMemory onComplete={handleMemoryWin} best={progress.memoryBest} godMode={godMode} />}
               {view === 'saarbruecken' && <LevelBossBattle defeated={progress.bosses} onDefeat={handleBossDefeat} completed={progress.completed.includes('saarbruecken')} godMode={godMode} />}
-              {view === 'osnabrueck' && <LevelRhythm onComplete={handleRhythmDone} highScore={progress.runnerHigh} godMode={godMode} />}
-              {view === 'gdansk' && (
+              {view === 'osnabrueck' && (
                 <LevelDeckbuilder
                   onComplete={handleDeckbuilderWin}
                   godMode={godMode}
@@ -3649,6 +3656,7 @@ function FunModeInner({ onBack }) {
                   onBossStageUnlocked={handleDeckbuilderBossUnlock}
                 />
               )}
+              {view === 'gdansk' && <LevelRhythm onComplete={handleRhythmDone} highScore={progress.runnerHigh} godMode={godMode} />}
               {view === 'bonus' && <LevelSurvivor onComplete={handleSurvivorDone} godMode={godMode} />}
               {view === 'bonus2' && <LevelBitTrip onComplete={handleBitTripDone} godMode={godMode} />}
               {view === 'wroclaw' && <LevelFinalBoss contactUnlocked={progress.contactUnlocked} onComplete={handleFinalDone} godMode={godMode} />}
@@ -3711,3 +3719,4 @@ function FunModeInner({ onBack }) {
     </div>
   )
 }
+
