@@ -1,4 +1,4 @@
-/* ═══════ FUN MODE V3 – MAP-FIRST RPG ═══════ */
+﻿/* ═══════ FUN MODE V3 – MAP-FIRST RPG ═══════ */
 /* Press Start 2P font loaded via index.html */
 
 :root {
@@ -1255,3 +1255,9 @@
   .fun-breakout-field { max-width: 100%; cursor: default; }
   .fun-breakout-brick-label { font-size: 0.25rem; }
 }
+
+@keyframes codeScroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
