@@ -1589,19 +1589,6 @@ const DECK_BOSSES = [
     ],
   },
   {
-    id: 'regisseur',
-    name: 'Against the System',
-    sprite: 'against_the_system',
-    hp: 170,
-    attacks: [
-      { name: 'Stack Overflow', dmg: 20, desc: 'Zu viel Rekursion. Dein Kopf raucht.' },
-      { name: 'Force Push', dmg: 24, desc: 'Überschreibt deine komplette Timeline.' },
-      { name: 'Firewall', dmg: 16, block: 20, desc: 'Zugriff verweigert. Port geschlossen.' },
-      { name: 'Patch Notes', dmg: 0, heal: 20, desc: 'Hotfix deployt. Systemintegrität wiederhergestellt.' },
-      { name: 'rm -rf /', dmg: 34, desc: 'FATAL ERROR: Alles wird gelöscht!' },
-    ],
-  },
-  {
     id: 'hausgeist',
     name: 'Heinrich von Nice',
     sprite: 'heinrich_von_nice.png',
@@ -1625,6 +1612,19 @@ const DECK_BOSSES = [
       { name: 'The Shiek', dmg: 20, block: 24, desc: 'Weil eine Persönlichkeit nicht ausreicht' },
       { name: "Ooccoo's Light", dmg: 0, heal: 25, desc: 'Ein grünes Leuchten füllt den Raum' },
       { name: 'Buchanandorf Punch', dmg: 44, desc: 'How brute!' },
+    ],
+  },
+  {
+    id: 'regisseur',
+    name: 'Against the System',
+    sprite: 'against_the_system',
+    hp: 250,
+    attacks: [
+      { name: 'Stack Overflow', dmg: 28, desc: 'Zu viel Rekursion. Dein Kopf raucht.' },
+      { name: 'Force Push', dmg: 32, desc: 'Überschreibt deine komplette Timeline.' },
+      { name: 'Firewall', dmg: 20, block: 26, desc: 'Zugriff verweigert. Port geschlossen.' },
+      { name: 'Patch Notes', dmg: 0, heal: 28, desc: 'Hotfix deployt. Systemintegrität wiederhergestellt.' },
+      { name: 'rm -rf /', dmg: 50, desc: 'FATAL ERROR: Alles wird gelöscht!' },
     ],
   },
 ]
