@@ -960,9 +960,9 @@ const THEATER_DATE_SCENES = [
     mood: '😏',
     text: 'Oh? Du betrittst einfach so mein Foyer? Ohne Karte? Mutig.',
     choices: [
-      { text: '„Für dich brauche ich keine Karten. Ich kenne deine Bühne auswendig."', affection: 3, next: 'flirt1', response: '*Das Gebäude knarzt geschmeichelt* ...Das war glatt. Zu glatt.' },
-      { text: '„Sorry, ich dachte das hier wäre das Kino."', affection: -1, next: 'flirt1', response: 'K-KINO?! Ich bin ein SCHAUSPIELHAUS! 600 Plätze! Brutalistischer Beton! RESPEKT!' },
-      { text: '„Ich hab gehört, hier werden die wildesten Rollen gespielt."', affection: 2, next: 'flirt1', response: '*Die Scheinwerfer flackern warm* Hm, du weißt also Bescheid...' },
+      { text: '„Für dich brauche ich keine Karten. Ich kenne deine Bühne auswendig."', affection: 3, next: 'flirt1', response: '*Das Gebäude knarzt geschmeichelt* ...Das war glatt. Zu glatt.', reaction: 'happy' },
+      { text: '„Sorry, ich dachte das hier wäre das Kino."', affection: -1, next: 'flirt1', response: 'K-KINO?! Ich bin ein SCHAUSPIELHAUS! 600 Plätze! Brutalistischer Beton! RESPEKT!', reaction: 'angry' },
+      { text: '„Ich hab gehört, hier werden die wildesten Rollen gespielt."', affection: 2, next: 'flirt1', response: '*Die Scheinwerfer flackern warm* Hm, du weißt also Bescheid...', reaction: 'happy' },
     ],
   },
   {
@@ -971,9 +971,9 @@ const THEATER_DATE_SCENES = [
     mood: '🏛️',
     text: 'Ich muss zugeben... seit der Borderline Prozession hat mich niemand mehr so berührt. 600 Menschen gleichzeitig, und doch fühlt man sich manchmal so... leer.',
     choices: [
-      { text: '„Ich würde jeden einzelnen deiner 600 Sitze besetzen, wenn ich könnte."', affection: 3, next: 'flirt2', response: '*Alle Lichter gehen gleichzeitig an* D-das ist das Schönste, was je jemand zu mir gesagt hat!' },
-      { text: '„Vielleicht brauchst du einfach die richtige Besetzung."', affection: 2, next: 'flirt2', response: 'Du klingst wie ein Intendant. Aber... ein süßer Intendant.' },
-      { text: '„Hast du mal eine Therapie in Betracht gezogen?"', affection: -2, next: 'flirt2', response: 'Ich bin ein GEBÄUDE. Mein Therapeut ist der Restaurator. Und der kommt nie.' },
+      { text: '„Ich würde jeden einzelnen deiner 600 Sitze besetzen, wenn ich könnte."', affection: 3, next: 'flirt2', response: '*Alle Lichter gehen gleichzeitig an* D-das ist das Schönste, was je jemand zu mir gesagt hat!', reaction: 'happy' },
+      { text: '„Vielleicht brauchst du einfach die richtige Besetzung."', affection: 2, next: 'flirt2', response: 'Du klingst wie ein Intendant. Aber... ein süßer Intendant.', reaction: 'erstaunt' },
+      { text: '„Hast du mal eine Therapie in Betracht gezogen?"', affection: -2, next: 'flirt2', response: 'Ich bin ein GEBÄUDE. Mein Therapeut ist der Restaurator. Und der kommt nie.', reaction: 'angry' },
     ],
   },
   {
@@ -982,9 +982,9 @@ const THEATER_DATE_SCENES = [
     mood: '✨',
     text: 'Weißt du, was das Schlimmste ist? Jeder will immer nur MEINE Bühne. Niemand fragt, wie es MIR geht. Wie es ist, jeden Abend aufgemacht und wieder zugemacht zu werden.',
     choices: [
-      { text: '„Ich würde dich nie nur wegen deiner Bühne mögen. Du hast auch ein wunderschönes Treppenhaus."', affection: 4, next: 'deep1', response: '*Die Notausganglichter leuchten rosa* Mein... Treppenhaus? Das hat noch nie jemand bemerkt...' },
-      { text: '„Dein Foyer ist auch ganz nett."', affection: 1, next: 'deep1', response: 'Nett? NETT?! Brutalistischer Beton von 1966! Das ist nicht nett, das ist IKONISCH.' },
-      { text: '„Was ist mit deinem Hintereingang?"', affection: -1, next: 'deep1', response: '...Wir kennen uns gerade mal 2 Minuten.' },
+      { text: '„Ich würde dich nie nur wegen deiner Bühne mögen. Du hast auch ein wunderschönes Treppenhaus."', affection: 4, next: 'deep1', response: '*Die Notausganglichter leuchten rosa* Mein... Treppenhaus? Das hat noch nie jemand bemerkt...', reaction: 'happy' },
+      { text: '„Dein Foyer ist auch ganz nett."', affection: 1, next: 'deep1', response: 'Nett? NETT?! Brutalistischer Beton von 1966! Das ist nicht nett, das ist IKONISCH.', reaction: 'angry' },
+      { text: '„Was ist mit deinem Hintereingang?"', affection: -1, next: 'deep1', response: '...Wir kennen uns gerade mal 2 Minuten.', reaction: 'erstaunt' },
     ],
   },
   {
@@ -993,9 +993,9 @@ const THEATER_DATE_SCENES = [
     mood: '🥺',
     text: 'Ich hatte mal was mit dem Opernhaus. Aber das war so... melodramatisch. Immer nur Arien und Tränen. Ein Schauspielhaus braucht auch mal jemanden, der einfach spricht. Normal. Auf Augenhöhe.',
     choices: [
-      { text: '„Ich kann dir einen Monolog halten, so lang du willst."', affection: 3, next: 'deep2', response: '*Eine einzelne Träne tropft von der Dachrinne* ...Bitte. Halt ihn. Halt den Monolog.' },
-      { text: '„Mein Ex war auch ein Gebäude. Ein IKEA. Ich versteh dich."', affection: 2, next: 'deep2', response: 'IKEA? Das ist Einzelhandel! Das ist was komplett anderes! Aber... danke. Für die Ehrlichkeit.' },
-      { text: '„Hast du schon mal was mit einem Parkhaus gehabt?"', affection: -1, next: 'deep2', response: 'Ein PARKHAUS? Ich bin 600 Plätze, nicht 600 Parkplätze!' },
+      { text: '„Ich kann dir einen Monolog halten, so lang du willst."', affection: 3, next: 'deep2', response: '*Eine einzelne Träne tropft von der Dachrinne* ...Bitte. Halt ihn. Halt den Monolog.', reaction: 'happy' },
+      { text: '„Mein Ex war auch ein Gebäude. Ein IKEA. Ich versteh dich."', affection: 2, next: 'deep2', response: 'IKEA? Das ist Einzelhandel! Das ist was komplett anderes! Aber... danke. Für die Ehrlichkeit.', reaction: 'erstaunt' },
+      { text: '„Hast du schon mal was mit einem Parkhaus gehabt?"', affection: -1, next: 'deep2', response: 'Ein PARKHAUS? Ich bin 600 Plätze, nicht 600 Parkplätze!', reaction: 'angry' },
     ],
   },
   {
@@ -1004,9 +1004,9 @@ const THEATER_DATE_SCENES = [
     mood: '💖',
     text: 'Bevor du gehst... Es gab mal einen jungen Schauspieler hier. Noch Student, aber man konnte es schon sehen. Maccario, Soldat, Mann im Auto... sogar Lolita. Er hat jede meiner Bretter zum Klingen gebracht.',
     choices: [
-      { text: '„Michi Wischniowski?"', affection: 5, next: 'finale', response: '*Das gesamte Gebäude erbebt* DU KENNST IHN? Ja! JA! Er war der Einzige, der mich wirklich verstanden hat!' },
-      { text: '„Klingt, als wärst du noch nicht über ihn hinweg."', affection: 3, next: 'finale', response: 'Über ihn hinweg? Ich bin ein Gebäude. Ich komme über NIEMANDEN hinweg. Ich stehe hier. Seit 1966.' },
-      { text: '„Lolita? Echt jetzt?"', affection: 1, next: 'finale', response: 'Frag NICHT. Die Borderline Prozession war eine wilde Zeit für uns alle.' },
+      { text: '„Michi Wischniowski?"', affection: 5, next: 'finale', response: '*Das gesamte Gebäude erbebt* DU KENNST IHN? Ja! JA! Er war der Einzige, der mich wirklich verstanden hat!', reaction: 'happy' },
+      { text: '„Klingt, als wärst du noch nicht über ihn hinweg."', affection: 3, next: 'finale', response: 'Über ihn hinweg? Ich bin ein Gebäude. Ich komme über NIEMANDEN hinweg. Ich stehe hier. Seit 1966.', reaction: 'erstaunt' },
+      { text: '„Lolita? Echt jetzt?"', affection: 1, next: 'finale', response: 'Frag NICHT. Die Borderline Prozession war eine wilde Zeit für uns alle.', reaction: 'angry' },
     ],
   },
   {
@@ -1049,6 +1049,7 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
   const [charIdx, setCharIdx] = useState(0)
   const [showChoices, setShowChoices] = useState(false)
   const [ending, setEnding] = useState(null)
+  const [currentReaction, setCurrentReaction] = useState(null) // null = normal, 'happy', 'angry', 'erstaunt'
   const [imgTransition, setImgTransition] = useState(0) // 0 = before image, 1 = after image
 
   useEffect(() => { if (godMode && !completed) { setPhase('done'); onDialogDone() } }, [godMode])
@@ -1087,6 +1088,7 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
     const newAffection = affection + choice.affection
     setAffection(newAffection)
     setResponse(choice.response)
+    setCurrentReaction(choice.reaction || null)
     setPhase('response')
   }
 
@@ -1096,6 +1098,7 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
     const nextSceneIdx = THEATER_DATE_SCENES.findIndex(s => s.id === scene.choices[0]?.next)
     if (nextSceneIdx >= 0 && THEATER_DATE_SCENES[nextSceneIdx].choices.length > 0) {
       setSceneIdx(nextSceneIdx)
+      setCurrentReaction(null)
       setPhase('date')
     } else {
       // Determine ending
@@ -1112,6 +1115,13 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
   const skipText = () => {
     if (charIdx < displayText.length) setCharIdx(displayText.length)
   }
+
+  const REACTION_IMAGES = {
+    happy: 'Happy.png',
+    angry: 'Angry.png',
+    erstaunt: 'Erstaunt.png',
+  }
+  const reactionImg = currentReaction ? `${IK}${REACTION_IMAGES[currentReaction]}?tr=w-560` : null
 
   const maxAffection = 20
   const affectionPct = Math.max(0, Math.min(100, (affection / maxAffection) * 100))
@@ -1172,7 +1182,11 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
             <img src={`${IK}Dortmund%20before.png?tr=w-560`} alt="Schauspielhaus Dortmund"
               style={{ width: '100%', height: 'auto', borderRadius: '14px', display: 'block', opacity: 1 - imgTransition, transition: 'none' }} />
             <img src={`${IK}Dortmund%20after.png?tr=w-560`} alt="Schauspielhaus Dortmund"
-              style={{ width: '100%', height: 'auto', borderRadius: '14px', display: 'block', position: 'absolute', top: 0, left: 0, opacity: imgTransition, transition: 'none' }} />
+              style={{ width: '100%', height: 'auto', borderRadius: '14px', display: 'block', position: 'absolute', top: 0, left: 0, opacity: currentReaction ? 0 : imgTransition, transition: 'opacity 0.4s ease' }} />
+            {reactionImg && (
+              <img src={reactionImg} alt={currentReaction}
+                style={{ width: '100%', height: 'auto', borderRadius: '14px', display: 'block', position: 'absolute', top: 0, left: 0, opacity: 1, transition: 'opacity 0.3s ease' }} />
+            )}
           </div>
         </motion.div>
         <div style={{ marginTop: '0.4rem' }}>
