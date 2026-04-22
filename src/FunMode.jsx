@@ -1910,7 +1910,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
             <motion.div key={card.draftId} className="fun-deck-card fun-deck-card-draft" onClick={() => pickCard(card)}
               whileHover={{ scale: 1.05, y: -5 }} whileTap={{ scale: 0.95 }}>
               <div className="fun-deck-card-img">
-                <img src={`${IK}${card.img}?tr=w-200,h-130,fo-auto`} alt="" />
+                <img src={`${IK}${card.img}?tr=w-400,h-260,fo-auto,q-90`} alt="" />
               </div>
               <div className="fun-deck-card-cost">{card.cost}</div>
               <div className="fun-deck-card-name">{card.name}</div>
@@ -1992,7 +1992,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
               whileHover={card.cost <= energy ? { y: -15, scale: 1.08 } : {}}
               initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: i * 0.08 }}>
               <div className="fun-deck-card-img">
-                <img src={`${IK}${card.img}?tr=w-160,h-100,fo-auto`} alt="" />
+                <img src={`${IK}${card.img}?tr=w-400,h-260,fo-auto,q-90`} alt="" />
               </div>
               <div className="fun-deck-card-cost">{card.cost}</div>
               <div className="fun-deck-card-name">{card.name}</div>
@@ -2042,7 +2042,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
               <motion.div key={card.id} className="fun-deck-card fun-deck-card-draft" onClick={() => chooseRewardAndContinue(card)}
                 whileHover={{ scale: 1.04, y: -4 }} whileTap={{ scale: 0.98 }}>
                 <div className="fun-deck-card-img">
-                  <img src={`${IK}${card.img}?tr=w-200,h-130,fo-auto`} alt="" />
+                  <img src={`${IK}${card.img}?tr=w-400,h-260,fo-auto,q-90`} alt="" />
                 </div>
                 <div className="fun-deck-card-cost">{card.cost}</div>
                 <div className="fun-deck-card-name">{card.name}</div>
