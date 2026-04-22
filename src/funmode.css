@@ -428,7 +428,7 @@
 .fun-skill-cost { font-family: var(--fun-px); font-size: 0.35rem; color: var(--fun-accent); margin-left: auto; }
 
 /* ═══════ DIALOG ═══════ */
-.fun-dialog-lvl { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
+.fun-dialog-lvl { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; }
 .fun-dialog-box {
   width: 100%; max-width: 600px; background: var(--fun-bg2); border: 3px solid var(--fun-accent); border-radius: var(--fun-r);
   padding: 1.5rem 2rem; cursor: pointer; position: relative; box-shadow: 0 0 20px rgba(0,255,136,0.1);
