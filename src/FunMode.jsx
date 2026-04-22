@@ -1096,7 +1096,20 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
     if (charIdx < displayText.length) setCharIdx(displayText.length)
   }
 
+  const maxAffection = 20
+  const affectionPct = Math.max(0, Math.min(100, (affection / maxAffection) * 100))
   const affectionLabel = affection <= 0 ? '💔' : affection < 6 ? '🤨' : affection < 10 ? '😊' : affection < 15 ? '😍' : '💖'
+  const affectionColor = affection <= 0 ? '#e74c3c' : affection < 6 ? '#e67e22' : affection < 10 ? '#f1c40f' : affection < 15 ? '#e91e8a' : '#e91e63'
+
+  const AffectionMeter = () => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.6rem' }}>
+      <span style={{ fontSize: '1.1rem' }}>{affectionLabel}</span>
+      <div style={{ flex: 1, height: '12px', background: 'rgba(255,255,255,0.1)', borderRadius: '6px', overflow: 'hidden', position: 'relative' }}>
+        <motion.div animate={{ width: `${affectionPct}%` }} transition={{ type: 'spring', damping: 15 }} style={{ height: '100%', background: `linear-gradient(90deg, ${affectionColor}, ${affectionColor}dd)`, borderRadius: '6px' }} />
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: 0.6, minWidth: '2rem', textAlign: 'right' }}>{affection}/{maxAffection}</span>
+    </div>
+  )
 
   if (phase === 'done') {
     return (
@@ -1112,7 +1125,7 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
   if (phase === 'ending' && ending) {
     return (
       <div className="fun-lvl-content fun-dialog-lvl">
-        <div className="fun-dating-affection">Zuneigung: {affection} {affectionLabel}</div>
+        <AffectionMeter />
         <motion.div className="fun-dialog-box" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
           <h3 style={{ marginBottom: '0.6rem', fontSize: '1.2rem' }}>{ending.title}</h3>
           <div className="fun-dialog-text" style={{ whiteSpace: 'pre-line', lineHeight: 1.6 }}>{ending.text}</div>
@@ -1124,15 +1137,13 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
 
   return (
     <div className="fun-lvl-content fun-dialog-lvl">
-      <div className="fun-dating-affection" style={{ textAlign: 'right', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
-        Zuneigung: {affection} {affectionLabel}
-      </div>
+      <AffectionMeter />
       <div className="fun-dating-scene">
         <div className="fun-dating-theater" style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <motion.div style={{ fontSize: '4rem' }} animate={{ rotate: phase === 'response' ? [0, -2, 2, 0] : 0 }} transition={{ duration: 0.5 }}>
-            {scene?.mood || '🏛️'}
+          <motion.div animate={{ rotate: phase === 'response' ? [0, -2, 2, 0] : 0 }} transition={{ duration: 0.5 }}>
+            <img src={`${IK}Dortmund.png?tr=w-200,h-200,fo-auto`} alt="Schauspielhaus Dortmund" style={{ width: '120px', height: '120px', objectFit: 'contain', borderRadius: '12px' }} />
           </motion.div>
-          <div style={{ fontWeight: 'bold', fontSize: '0.9rem', opacity: 0.7 }}>{scene?.speaker}</div>
+          <div style={{ fontWeight: 'bold', fontSize: '0.9rem', opacity: 0.7, marginTop: '0.3rem' }}>{scene?.speaker} {scene?.mood}</div>
         </div>
         <div className="fun-dialog-box" onClick={phase === 'response' ? advanceFromResponse : skipText}>
           <div className="fun-dialog-text" style={{ minHeight: '3rem' }}>{shown}{charIdx < displayText.length && <span className="fun-cursor">▌</span>}</div>
