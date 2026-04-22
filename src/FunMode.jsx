@@ -950,11 +950,6 @@ function LevelDortmundLegacy({ onDialogDone, completed, godMode }) {
   )
 }
 
-      )}
-    </div>
-  )
-}
-
 /* ═══════════════════════════════════════
    LEVEL: DORTMUND – THEATER DATING SIM
    ═══════════════════════════════════════ */
