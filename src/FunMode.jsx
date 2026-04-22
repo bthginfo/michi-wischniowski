@@ -30,7 +30,7 @@ const MAP_NODES = [
   { id: 'essen',        name: 'Folkwang Essen',  icon: '🎓', x: 5, y: 55, unlocks: ['bochum'], levelType: 'pitjump', label: 'Grubensprung' },
   { id: 'bochum',       name: 'Bochum',          icon: '🎪', x: 9, y: 48, unlocks: ['dortmund', 'bonus'], levelType: 'memory', label: 'Memory' },
   { id: 'bonus',        name: 'Bonus',           icon: '⭐', x: 45, y: 50, unlocks: [], levelType: 'survivor', label: 'Survival Arena (Optional)' },
-  { id: 'dortmund',     name: 'Dortmund',        icon: '🎭', x: 17, y: 55, unlocks: ['saarbruecken'], levelType: 'dialog', label: 'Worträtsel' },
+  { id: 'dortmund',     name: 'Dortmund',        icon: '💕', x: 17, y: 55, unlocks: ['saarbruecken'], levelType: 'dating', label: 'Theater-Treffen' },
   { id: 'saarbruecken', name: 'Saarbrücken',     icon: '⚔️', x: 5, y: 75, unlocks: ['osnabrueck'], levelType: 'bossbattle', label: 'Boss Arena' },
   { id: 'osnabrueck',   name: 'Osnabrück',       icon: '🃏', x: 15, y: 35, unlocks: ['gdansk'], levelType: 'deckbuilder', label: 'Kartenkampf' },
   { id: 'gdansk',       name: 'Gdańsk',          icon: '🐴', x: 75, y: 25, unlocks: ['wroclaw', 'bonus2'], levelType: 'rhythm', label: 'Bühnen-Beat' },
@@ -237,11 +237,11 @@ const LEVEL_STORIES = {
     ]
   },
   dortmund: {
-    title: '🎭 Dortmund – Erste Bühnen',
+    title: '💕 Dortmund – Theater-Treffen',
     lines: [
-      'Noch während der Ausbildung steht Michi auf echten Bühnen. Schauspiel Dortmund ruft!',
-      'Maccario, Soldat, Mann im Auto... und ja, auch Lolita. Die Rollen sind wild, die Erfahrung unbezahlbar.',
-      'Erlebe die Geschichte von Michis Bühnenanfängen!'
+      'Dortmund. Die Stadt, in der alles begann. Und dort steht ES...',
+      'Das Schauspielhaus Dortmund. 600 Plätze. Brutalistischer Beton. Unwiderstehlich.',
+      'Kannst du das Herz eines Theaters erobern? Es gibt nur einen Weg, es herauszufinden...'
     ]
   },
   bochum: {
@@ -930,9 +930,9 @@ function LevelDialog({ onComplete, completed }) {
 }
 
 /* ═══════════════════════════════════════
-   LEVEL: DORTMUND (Dialog + Word Scramble)
+   LEVEL: DORTMUND LEGACY (Dialog + Word Scramble) — currently unused
    ═══════════════════════════════════════ */
-function LevelDortmund({ onDialogDone, completed, godMode }) {
+function LevelDortmundLegacy({ onDialogDone, completed, godMode }) {
   const [phase, setPhase] = useState(completed ? 'done' : 'scramble')
   useEffect(() => { if (godMode && !completed) { setPhase('done'); onDialogDone() } }, [godMode])
   return (
@@ -946,6 +946,216 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+      )}
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════
+   LEVEL: DORTMUND – THEATER DATING SIM
+   ═══════════════════════════════════════ */
+const THEATER_DATE_SCENES = [
+  {
+    id: 'intro',
+    speaker: 'Schauspielhaus',
+    mood: '😏',
+    text: 'Oh? Du betrittst einfach so mein Foyer? Ohne Karte? Mutig.',
+    choices: [
+      { text: '„Für dich brauche ich keine Karten. Ich kenne deine Bühne auswendig."', affection: 3, next: 'flirt1', response: '*Das Gebäude knarzt geschmeichelt* ...Das war glatt. Zu glatt.' },
+      { text: '„Sorry, ich dachte das hier wäre das Kino."', affection: -1, next: 'flirt1', response: 'K-KINO?! Ich bin ein SCHAUSPIELHAUS! 600 Plätze! Brutalistischer Beton! RESPEKT!' },
+      { text: '„Ich hab gehört, hier werden die wildesten Rollen gespielt."', affection: 2, next: 'flirt1', response: '*Die Scheinwerfer flackern warm* Hm, du weißt also Bescheid...' },
+    ],
+  },
+  {
+    id: 'flirt1',
+    speaker: 'Schauspielhaus',
+    mood: '🏛️',
+    text: 'Ich muss zugeben... seit der Borderline Prozession hat mich niemand mehr so berührt. 600 Menschen gleichzeitig, und doch fühlt man sich manchmal so... leer.',
+    choices: [
+      { text: '„Ich würde jeden einzelnen deiner 600 Sitze besetzen, wenn ich könnte."', affection: 3, next: 'flirt2', response: '*Alle Lichter gehen gleichzeitig an* D-das ist das Schönste, was je jemand zu mir gesagt hat!' },
+      { text: '„Vielleicht brauchst du einfach die richtige Besetzung."', affection: 2, next: 'flirt2', response: 'Du klingst wie ein Intendant. Aber... ein süßer Intendant.' },
+      { text: '„Hast du mal eine Therapie in Betracht gezogen?"', affection: -2, next: 'flirt2', response: 'Ich bin ein GEBÄUDE. Mein Therapeut ist der Restaurator. Und der kommt nie.' },
+    ],
+  },
+  {
+    id: 'flirt2',
+    speaker: 'Schauspielhaus',
+    mood: '✨',
+    text: 'Weißt du, was das Schlimmste ist? Jeder will immer nur MEINE Bühne. Niemand fragt, wie es MIR geht. Wie es ist, jeden Abend aufgemacht und wieder zugemacht zu werden.',
+    choices: [
+      { text: '„Ich würde dich nie nur wegen deiner Bühne mögen. Du hast auch ein wunderschönes Treppenhaus."', affection: 4, next: 'deep1', response: '*Die Notausganglichter leuchten rosa* Mein... Treppenhaus? Das hat noch nie jemand bemerkt...' },
+      { text: '„Dein Foyer ist auch ganz nett."', affection: 1, next: 'deep1', response: 'Nett? NETT?! Brutalistischer Beton von 1966! Das ist nicht nett, das ist IKONISCH.' },
+      { text: '„Was ist mit deinem Hintereingang?"', affection: -1, next: 'deep1', response: '...Wir kennen uns gerade mal 2 Minuten.' },
+    ],
+  },
+  {
+    id: 'deep1',
+    speaker: 'Schauspielhaus',
+    mood: '🥺',
+    text: 'Ich hatte mal was mit dem Opernhaus. Aber das war so... melodramatisch. Immer nur Arien und Tränen. Ein Schauspielhaus braucht auch mal jemanden, der einfach spricht. Normal. Auf Augenhöhe.',
+    choices: [
+      { text: '„Ich kann dir einen Monolog halten, so lang du willst."', affection: 3, next: 'deep2', response: '*Eine einzelne Träne tropft von der Dachrinne* ...Bitte. Halt ihn. Halt den Monolog.' },
+      { text: '„Mein Ex war auch ein Gebäude. Ein IKEA. Ich versteh dich."', affection: 2, next: 'deep2', response: 'IKEA? Das ist Einzelhandel! Das ist was komplett anderes! Aber... danke. Für die Ehrlichkeit.' },
+      { text: '„Hast du schon mal was mit einem Parkhaus gehabt?"', affection: -1, next: 'deep2', response: 'Ein PARKHAUS? Ich bin 600 Plätze, nicht 600 Parkplätze!' },
+    ],
+  },
+  {
+    id: 'deep2',
+    speaker: 'Schauspielhaus',
+    mood: '💖',
+    text: 'Bevor du gehst... Es gab mal einen jungen Schauspieler hier. Noch Student, aber man konnte es schon sehen. Maccario, Soldat, Mann im Auto... sogar Lolita. Er hat jede meiner Bretter zum Klingen gebracht.',
+    choices: [
+      { text: '„Michi Wischniowski?"', affection: 5, next: 'finale', response: '*Das gesamte Gebäude erbebt* DU KENNST IHN? Ja! JA! Er war der Einzige, der mich wirklich verstanden hat!' },
+      { text: '„Klingt, als wärst du noch nicht über ihn hinweg."', affection: 3, next: 'finale', response: 'Über ihn hinweg? Ich bin ein Gebäude. Ich komme über NIEMANDEN hinweg. Ich stehe hier. Seit 1966.' },
+      { text: '„Lolita? Echt jetzt?"', affection: 1, next: 'finale', response: 'Frag NICHT. Die Borderline Prozession war eine wilde Zeit für uns alle.' },
+    ],
+  },
+  {
+    id: 'finale',
+    speaker: 'Schauspielhaus',
+    mood: '🌟',
+    text: null, // dynamically set based on affection
+    choices: [], // ending — no more choices
+  },
+]
+
+const THEATER_ENDINGS = {
+  bad: {
+    title: '💔 Friendzone: Gebäudezone',
+    text: 'Das Schauspielhaus dreht dir den Hintereingang zu.\n\n„Wir können Freunde bleiben. Du darfst im Foyer stehen. Aber nicht anfassen."',
+    threshold: -Infinity,
+  },
+  neutral: {
+    title: '🤝 Freundschaft+ (mit Benefits-Karte)',
+    text: 'Das Schauspielhaus räuspert sich (ein Rohr quietscht).\n\n„Du bist... okay. Komm wieder. Aber kauf dir eine Karte wie alle anderen."',
+    threshold: 6,
+  },
+  good: {
+    title: '💕 Es ist kompliziert (Saisonkarte)',
+    text: 'Die Scheinwerfer dimmen romantisch.\n\n„Du bekommst eine Saisonkarte. Und Zugang zum Treppenhaus. Nur für dich."',
+    threshold: 10,
+  },
+  perfect: {
+    title: '💖 True Love: Schlüssel zum Bühneneingang',
+    text: 'Das gesamte Schauspielhaus vibriert. Die Lichter tanzen. Von irgendwo ertönt ein Orchesterton.\n\n„Ich gebe dir den Schlüssel. Zum Bühneneingang. Du weißt, was das bedeutet."\n\n*Die Borderline Prozession beginnt erneut. Nur für euch beide.*',
+    threshold: 15,
+  },
+}
+
+function LevelDortmund({ onDialogDone, completed, godMode }) {
+  const [sceneIdx, setSceneIdx] = useState(0)
+  const [affection, setAffection] = useState(0)
+  const [phase, setPhase] = useState(completed ? 'done' : 'date') // date | response | ending | done
+  const [response, setResponse] = useState('')
+  const [charIdx, setCharIdx] = useState(0)
+  const [showChoices, setShowChoices] = useState(false)
+  const [ending, setEnding] = useState(null)
+
+  useEffect(() => { if (godMode && !completed) { setPhase('done'); onDialogDone() } }, [godMode])
+
+  const scene = THEATER_DATE_SCENES[sceneIdx]
+  const displayText = phase === 'response' ? response : (scene?.text || '')
+  const shown = displayText.slice(0, charIdx)
+
+  useEffect(() => { setCharIdx(0); setShowChoices(false) }, [sceneIdx, phase])
+  useEffect(() => {
+    if (charIdx < displayText.length) {
+      const t = setTimeout(() => setCharIdx(c => c + 1), 22)
+      return () => clearTimeout(t)
+    } else if (phase === 'date') {
+      setShowChoices(true)
+    }
+  }, [charIdx, displayText, phase])
+
+  const handleChoice = (choice) => {
+    const newAffection = affection + choice.affection
+    setAffection(newAffection)
+    setResponse(choice.response)
+    setPhase('response')
+  }
+
+  const advanceFromResponse = () => {
+    if (charIdx < response.length) { setCharIdx(response.length); return }
+    const scene = THEATER_DATE_SCENES[sceneIdx]
+    const nextSceneIdx = THEATER_DATE_SCENES.findIndex(s => s.id === scene.choices[0]?.next)
+    if (nextSceneIdx >= 0 && THEATER_DATE_SCENES[nextSceneIdx].choices.length > 0) {
+      setSceneIdx(nextSceneIdx)
+      setPhase('date')
+    } else {
+      // Determine ending
+      let end = THEATER_ENDINGS.bad
+      if (affection >= THEATER_ENDINGS.perfect.threshold) end = THEATER_ENDINGS.perfect
+      else if (affection >= THEATER_ENDINGS.good.threshold) end = THEATER_ENDINGS.good
+      else if (affection >= THEATER_ENDINGS.neutral.threshold) end = THEATER_ENDINGS.neutral
+      setEnding(end)
+      setPhase('ending')
+      onDialogDone()
+    }
+  }
+
+  const skipText = () => {
+    if (charIdx < displayText.length) setCharIdx(displayText.length)
+  }
+
+  const affectionLabel = affection <= 0 ? '💔' : affection < 6 ? '🤨' : affection < 10 ? '😊' : affection < 15 ? '😍' : '💖'
+
+  if (phase === 'done') {
+    return (
+      <div className="fun-lvl-content">
+        <div className="fun-done-badge">✅ Theater-Treffen abgeschlossen!</div>
+        <div style={{ marginTop: '1rem' }}>
+          <button className="fun-btn fun-btn-small" onClick={() => { setSceneIdx(0); setAffection(0); setPhase('date'); setEnding(null) }}>🔄 Nochmal daten</button>
+        </div>
+      </div>
+    )
+  }
+
+  if (phase === 'ending' && ending) {
+    return (
+      <div className="fun-lvl-content fun-dialog-lvl">
+        <div className="fun-dating-affection">Zuneigung: {affection} {affectionLabel}</div>
+        <motion.div className="fun-dialog-box" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+          <h3 style={{ marginBottom: '0.6rem', fontSize: '1.2rem' }}>{ending.title}</h3>
+          <div className="fun-dialog-text" style={{ whiteSpace: 'pre-line', lineHeight: 1.6 }}>{ending.text}</div>
+        </motion.div>
+        <button className="fun-btn fun-btn-primary" style={{ marginTop: '1rem' }} onClick={() => setPhase('done')}>▶ Weiter</button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="fun-lvl-content fun-dialog-lvl">
+      <div className="fun-dating-affection" style={{ textAlign: 'right', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
+        Zuneigung: {affection} {affectionLabel}
+      </div>
+      <div className="fun-dating-scene">
+        <div className="fun-dating-theater" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          <motion.div style={{ fontSize: '4rem' }} animate={{ rotate: phase === 'response' ? [0, -2, 2, 0] : 0 }} transition={{ duration: 0.5 }}>
+            {scene?.mood || '🏛️'}
+          </motion.div>
+          <div style={{ fontWeight: 'bold', fontSize: '0.9rem', opacity: 0.7 }}>{scene?.speaker}</div>
+        </div>
+        <div className="fun-dialog-box" onClick={phase === 'response' ? advanceFromResponse : skipText}>
+          <div className="fun-dialog-text" style={{ minHeight: '3rem' }}>{shown}{charIdx < displayText.length && <span className="fun-cursor">▌</span>}</div>
+          {phase === 'response' && charIdx >= displayText.length && (
+            <div className="fun-dialog-hint">▶ Weiter</div>
+          )}
+        </div>
+        {phase === 'date' && showChoices && (
+          <motion.div className="fun-dating-choices" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.8rem' }}>
+            {scene.choices.map((c, i) => (
+              <motion.button key={i} className="fun-btn fun-dating-choice" whileHover={{ scale: 1.02, x: 4 }} whileTap={{ scale: 0.98 }}
+                onClick={() => handleChoice(c)} style={{ textAlign: 'left', padding: '0.6rem 1rem', fontSize: '0.85rem' }}>
+                {c.text}
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </div>
     </div>
   )
 }
@@ -3562,7 +3772,7 @@ function FunModeInner({ onBack }) {
     setProgress(p => ({ ...p, runnerHigh: Math.max(p.runnerHigh, dist) }))
     completeLevel('essen')
   }
-  const handleDialogDone = () => { addXp(30); addAch('scramble_win'); completeLevel('dortmund') }
+  const handleDialogDone = () => { addXp(30); addAch('scramble_win'); completeLevel('dortmund') } // scramble_win achievement kept for now
   const handleMemoryWin = (moves) => {
     addAch('memory'); addXp(30); completeLevel('bochum')
     setProgress(p => ({ ...p, memoryBest: p.memoryBest ? Math.min(p.memoryBest, moves) : moves }))
