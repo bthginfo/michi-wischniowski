@@ -1055,18 +1055,19 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
 
   // Crossfade from "before" to "after" image over 4 seconds on mount
   useEffect(() => {
-    if (phase === 'date' || phase === 'response') {
-      const start = Date.now()
-      const duration = 4000
-      const tick = () => {
-        const elapsed = Date.now() - start
-        const progress = Math.min(1, elapsed / duration)
-        setImgTransition(progress)
-        if (progress < 1) requestAnimationFrame(tick)
-      }
-      requestAnimationFrame(tick)
+    let raf
+    let startTime = null
+    const duration = 4000
+    const tick = (timestamp) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const progress = Math.min(1, elapsed / duration)
+      setImgTransition(progress)
+      if (progress < 1) raf = requestAnimationFrame(tick)
     }
-  }, []) // only on mount
+    raf = requestAnimationFrame(tick)
+    return () => { if (raf) cancelAnimationFrame(raf) }
+  }, [])
 
   const scene = THEATER_DATE_SCENES[sceneIdx]
   const displayText = phase === 'response' ? response : (scene?.text || '')
@@ -1143,9 +1144,9 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
       <div className="fun-lvl-content fun-dialog-lvl" style={{ maxWidth: '640px', margin: '0 auto' }}>
         <AffectionMeter />
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <motion.img src={`${IK}Dortmund%20after.png?tr=w-500,h-500,fo-auto`} alt="Schauspielhaus"
+          <motion.img src={`${IK}Dortmund%20after.png?tr=w-560`} alt="Schauspielhaus"
             initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-            style={{ width: '160px', height: '160px', objectFit: 'contain', borderRadius: '16px' }} />
+            style={{ width: '220px', height: 'auto', objectFit: 'contain', borderRadius: '16px' }} />
         </div>
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           style={{ background: 'rgba(255,255,255,0.07)', borderRadius: '16px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
@@ -1165,12 +1166,14 @@ function LevelDortmund({ onDialogDone, completed, godMode }) {
         <motion.div
           animate={phase === 'response' ? { y: [0, -4, 0], rotate: [0, -1.5, 1.5, 0] } : { y: [0, -3, 0] }}
           transition={phase === 'response' ? { duration: 0.5 } : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ display: 'inline-block', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', padding: '10px', border: '2px solid rgba(255,255,255,0.1)', position: 'relative', width: '220px', height: '220px' }}
+          style={{ display: 'inline-block', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', padding: '10px', border: '2px solid rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}
         >
-          <img src={`${IK}Dortmund%20before.png?tr=w-500,h-500,fo-auto`} alt="Schauspielhaus Dortmund"
-            style={{ width: '200px', height: '200px', objectFit: 'contain', borderRadius: '14px', display: 'block', position: 'absolute', top: '10px', left: '10px', opacity: 1 - imgTransition }} />
-          <img src={`${IK}Dortmund%20after.png?tr=w-500,h-500,fo-auto`} alt="Schauspielhaus Dortmund"
-            style={{ width: '200px', height: '200px', objectFit: 'contain', borderRadius: '14px', display: 'block', position: 'absolute', top: '10px', left: '10px', opacity: imgTransition }} />
+          <div style={{ position: 'relative', width: '280px' }}>
+            <img src={`${IK}Dortmund%20before.png?tr=w-560`} alt="Schauspielhaus Dortmund"
+              style={{ width: '100%', height: 'auto', borderRadius: '14px', display: 'block', opacity: 1 - imgTransition, transition: 'none' }} />
+            <img src={`${IK}Dortmund%20after.png?tr=w-560`} alt="Schauspielhaus Dortmund"
+              style={{ width: '100%', height: 'auto', borderRadius: '14px', display: 'block', position: 'absolute', top: 0, left: 0, opacity: imgTransition, transition: 'none' }} />
+          </div>
         </motion.div>
         <div style={{ marginTop: '0.4rem' }}>
           <span style={{ fontWeight: 'bold', fontSize: '0.9rem', opacity: 0.7 }}>{scene?.speaker}</span>
