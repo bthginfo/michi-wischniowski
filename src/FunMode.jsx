@@ -2279,11 +2279,16 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
 
         {/* Divider */}
         <div className="fun-deck-divider">
-          <div className="fun-deck-player-stats">
-            <span>❤️ {pHp}/{playerMaxHp}</span>
-            <span>🛡️ {pBlock}</span>
-            <span>⚡ {energy}/3</span>
-            <span>📚 {drawPile.length} | 🗑️ {discard.length}</span>
+          <div className="fun-deck-player-area" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <motion.div animate={animating && pHp < playerMaxHp ? { x: [0, 5, -5, 0] } : {}} transition={{ duration: 0.3 }}>
+              <CharSprite anim={pHp <= playerMaxHp * 0.3 ? 'hurt' : 'stand'} size={56} />
+            </motion.div>
+            <div className="fun-deck-player-stats">
+              <span>❤️ {pHp}/{playerMaxHp}</span>
+              <span>🛡️ {pBlock}</span>
+              <span>⚡ {energy}/3</span>
+              <span>📚 {drawPile.length} | 🗑️ {discard.length}</span>
+            </div>
           </div>
         </div>
 
