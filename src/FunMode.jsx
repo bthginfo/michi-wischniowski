@@ -13,13 +13,14 @@ const CHAR_SPRITES = {
   victory: [`${CH}Character%20victory.png`, `${CH}Character%20victory%202.png`, `${CH}Character%20victory%203.png`, `${CH}Character%20victory%204.png`],
   hurt: [`${CH}Character%20hurt.png`, `${CH}Character%20hurt%202.png`, `${CH}Character%20hurt%203.png`, `${CH}Character%20hurt%204.png`],
   interact: [`${CH}Character%20interact.png`, `${CH}Character%20interact%202.png`, `${CH}Character%20interact%203.png`],
+  jump: [`${CH}Character%20jump.png`, `${CH}Character%20jump%202.png`, `${CH}Character%20jump%203.png`, `${CH}Character%20jump%204.png`],
 }
 
 function CharSprite({ anim = 'stand', size = 48, style = {} }) {
   const [frame, setFrame] = useState(0)
   const frames = CHAR_SPRITES[anim] || CHAR_SPRITES.stand
   useEffect(() => {
-    const interval = anim === 'walk' ? 180 : anim === 'victory' ? 250 : 500
+    const interval = anim === 'walk' ? 180 : anim === 'jump' ? 150 : anim === 'victory' ? 250 : 500
     const t = setInterval(() => setFrame(f => (f + 1) % frames.length), interval)
     return () => clearInterval(t)
   }, [anim, frames.length])
@@ -842,7 +843,7 @@ function LevelPitJump({ onComplete, highScore, godMode }) {
         {/* Michi sprite - fixed at center screen */}
         <div className={`fun-pitjump-michi ${phase === 'scrolling' ? 'running' : 'jumping'}`}
           style={{ left: '120px', top: `${michiY}%` }}>
-          <CharSprite anim={phase === 'scrolling' ? 'walk' : 'stand'} size={56} />
+          <CharSprite anim={phase === 'scrolling' ? 'walk' : 'jump'} size={56} />
         </div>
 
         {/* Tap indicator */}
