@@ -3416,7 +3416,7 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
         return pos && (
           <div className={`fun-michi-sprite ${isWalking ? 'walking' : ''}`}
             style={{ left: `${pos.x}%`, top: `${pos.y}%` }}>
-            <CharSprite anim={isWalking ? 'walk' : 'stand'} size={40} />
+            <CharSprite anim={isWalking ? 'walk' : 'stand'} size={64} />
           </div>
         )
       })()}
@@ -3464,7 +3464,7 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
             {michiPosNode && (
               <div className={`fun-stepper-michi ${michiWalking ? 'walking' : ''}`}
                 style={{ left: `${michiPosNode.x}%`, top: `${michiPosNode.y}%` }}>
-                <CharSprite anim={michiWalking ? 'walk' : 'stand'} size={32} />
+                <CharSprite anim={michiWalking ? 'walk' : 'stand'} size={52} />
               </div>
             )}
             {/* Position dot */}
