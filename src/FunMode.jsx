@@ -3351,6 +3351,10 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
   const stepperSwipeRef = useRef(null)
   const [michiWalking, setMichiWalking] = useState(false)
   const michiPosNode = getNode(michiPos)
+  const [michiVisualPos, setMichiVisualPos] = useState(() => {
+    const n = getNode(michiPos)
+    return n ? { x: n.x, y: n.y } : { x: 50, y: 50 }
+  })
 
   const [showPinchHint, setShowPinchHint] = useState(true)
   useEffect(() => { const t = setTimeout(() => setShowPinchHint(false), 4200); return () => clearTimeout(t) }, [])
@@ -3470,7 +3474,7 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
             {/* Michi sprite */}
             {michiPosNode && (
               <div className={`fun-stepper-michi ${michiWalking ? 'walking' : ''}`}
-                style={{ left: `${michiPosNode.x}%`, top: `${michiPosNode.y}%` }}>
+                style={{ left: `${michiVisualPos.x}%`, top: `${michiVisualPos.y}%`, transition: michiWalking ? 'left 0.7s ease-in-out, top 0.7s ease-in-out' : 'none' }}>
                 <CharSprite anim={michiWalking ? 'walk' : 'stand'} size={52} />
               </div>
             )}
@@ -3495,6 +3499,7 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
                 onClick={() => {
                   if (michiPos !== stepperNode.id) {
                     setMichiWalking(true)
+                    setMichiVisualPos({ x: stepperNode.x, y: stepperNode.y })
                     onMoveToNode(stepperNode.id)
                     setTimeout(() => setMichiWalking(false), 700)
                   } else {
