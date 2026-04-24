@@ -16,6 +16,11 @@ const CHAR_SPRITES = {
   jump: [`${CH}Character%20jump.png`, `${CH}Character%20jump%202.png`, `${CH}Character%20jump%203.png`, `${CH}Character%20jump%204.png`],
 }
 
+// Preload all character sprite images
+Object.values(CHAR_SPRITES).flat().forEach(src => {
+  if (typeof src === 'string') { const img = new Image(); img.src = src }
+})
+
 function CharSprite({ anim = 'stand', size = 48, style = {} }) {
   const [frame, setFrame] = useState(0)
   const frames = CHAR_SPRITES[anim] || CHAR_SPRITES.stand
@@ -1534,14 +1539,7 @@ function RPGBattle({ boss, beaten, onWin, onBack }) {
         <div className="fun-rpg-player-side">
           <motion.div className="fun-rpg-sprite"
             animate={phase === 'bossAtk' ? { x: [0, -8, 8, 0] } : phase === 'playerAtk' ? { x: [0, 10, 0] } : {}}>
-            <div className="fun-michi-char" style={{ transform: 'scale(1.8)' }}>
-              <div className="fun-michi-head" />
-              <div className="fun-michi-body" />
-              <div className="fun-michi-legs">
-                <div className="fun-michi-leg left" />
-                <div className="fun-michi-leg right" />
-              </div>
-            </div>
+            <CharSprite anim={phase === 'bossAtk' ? 'hurt' : phase === 'playerAtk' ? 'interact' : 'stand'} size={72} />
           </motion.div>
           <div className="fun-rpg-hp-wrap">
             <span className="fun-rpg-name">Michi</span>
