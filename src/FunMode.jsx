@@ -1539,7 +1539,7 @@ function RPGBattle({ boss, beaten, onWin, onBack }) {
         <div className="fun-rpg-player-side">
           <motion.div className="fun-rpg-sprite"
             animate={phase === 'bossAtk' ? { x: [0, -8, 8, 0] } : phase === 'playerAtk' ? { x: [0, 10, 0] } : {}}>
-            <CharSprite anim={phase === 'bossAtk' ? 'hurt' : phase === 'playerAtk' ? 'interact' : 'stand'} size={72} />
+            <CharSprite anim={phase === 'bossAtk' ? 'hurt' : phase === 'playerAtk' ? 'interact' : 'stand'} size={72} style={{ transform: 'scaleX(-1)' }} />
           </motion.div>
           <div className="fun-rpg-hp-wrap">
             <span className="fun-rpg-name">Michi</span>
