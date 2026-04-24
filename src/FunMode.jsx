@@ -20,11 +20,13 @@ function CharSprite({ anim = 'stand', size = 48, style = {} }) {
   const [frame, setFrame] = useState(0)
   const frames = CHAR_SPRITES[anim] || CHAR_SPRITES.stand
   useEffect(() => {
+    setFrame(0)
     const interval = anim === 'walk' ? 180 : anim === 'jump' ? 150 : anim === 'victory' ? 250 : 500
     const t = setInterval(() => setFrame(f => (f + 1) % frames.length), interval)
     return () => clearInterval(t)
   }, [anim, frames.length])
-  return <img src={`${frames[frame]}?tr=w-${size * 2}`} alt="" style={{ width: size, height: size, objectFit: 'contain', imageRendering: 'pixelated', ...style }} />
+  const safeFrame = frame % frames.length
+  return <img src={`${frames[safeFrame]}?tr=w-${size * 2}`} alt="" style={{ width: size, height: size, objectFit: 'contain', imageRendering: 'pixelated', ...style }} />
 }
 
 const IMAGES = [
