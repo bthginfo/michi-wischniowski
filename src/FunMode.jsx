@@ -5,6 +5,27 @@ import { MusicProvider, MusicToggle, useMusic, RHYTHM_BEAT_PATTERN, SFX } from '
 import { PixelAvatar } from 'pixel-avatar-lib'
 
 const IK = 'https://ik.imagekit.io/iu69j6qea/MW/'
+const CH = `${IK}character/`
+const CHAR_SPRITES = {
+  big: `${CH}Character%20big.png`,
+  stand: [`${CH}Character%20standing%20still.png`, `${CH}Character%20standing%20still%202.png`],
+  walk: [`${CH}Character%20walk.png`, `${CH}Character%20walk%202.png`, `${CH}Character%20walk%203.png`, `${CH}Character%20walk%204.png`],
+  victory: [`${CH}Character%20victory.png`, `${CH}Character%20victory%202.png`, `${CH}Character%20victory%203.png`, `${CH}Character%20victory%204.png`],
+  hurt: [`${CH}Character%20hurt.png`, `${CH}Character%20hurt%202.png`, `${CH}Character%20hurt%203.png`, `${CH}Character%20hurt%204.png`],
+  interact: [`${CH}Character%20interact.png`, `${CH}Character%20interact%202.png`, `${CH}Character%20interact%203.png`],
+}
+
+function CharSprite({ anim = 'stand', size = 48, style = {} }) {
+  const [frame, setFrame] = useState(0)
+  const frames = CHAR_SPRITES[anim] || CHAR_SPRITES.stand
+  useEffect(() => {
+    const interval = anim === 'walk' ? 180 : anim === 'victory' ? 250 : 500
+    const t = setInterval(() => setFrame(f => (f + 1) % frames.length), interval)
+    return () => clearInterval(t)
+  }, [anim, frames.length])
+  return <img src={`${frames[frame]}?tr=w-${size * 2}`} alt="" style={{ width: size, height: size, objectFit: 'contain', imageRendering: 'pixelated', ...style }} />
+}
+
 const IMAGES = [
   'a6f48f6b-c3b9-4f6f-8db3-5ee570efece0.avif',
   'c3909867-ea5d-487b-8438-3ffe73b50892.avif',
@@ -422,7 +443,7 @@ function LevelCompleteOverlay({ levelId, onContinue, onStay }) {
     <motion.div className="fun-level-complete" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <ParticleOverlay canvasRef={canvasRef} />
       <motion.div className="fun-level-complete-inner fun-level-complete-inner-soft" initial={{ scale: 0.92, y: 14 }} animate={{ scale: 1, y: 0 }} transition={{ type: 'spring', damping: 16 }}>
-        <div className="fun-level-complete-icon">⭐</div>
+        <div className="fun-level-complete-icon"><CharSprite anim="victory" size={64} /></div>
         <h3 className="fun-level-complete-title">Level abgeschlossen!</h3>
         <p className="fun-level-complete-city">{node?.icon} {node?.name}</p>
         {nextNode && <p className="fun-level-complete-next">Nächstes Ziel: {nextNode.icon} {nextNode.name}</p>}
@@ -608,7 +629,7 @@ function LevelCharSelect({ onComplete, completed, godMode, skills, xp, onUnlock 
       {phase === 'reveal' && (
         <div className="fun-char-card">
           <div className="fun-char-avatar">
-            <img src={`${IK}${IMAGES[1]}?tr=w-300,h-400,fo-face`} alt="Michi" />
+            <img src={`${CHAR_SPRITES.big}?tr=w-300,h-400`} alt="Michi" style={{ imageRendering: 'pixelated' }} />
             <div className="fun-char-name">MICHI WISCHNIOWSKI</div>
             <div className="fun-char-class">Schauspieler / Bariton / Pferd</div>
           </div>
@@ -821,14 +842,7 @@ function LevelPitJump({ onComplete, highScore, godMode }) {
         {/* Michi sprite - fixed at center screen */}
         <div className={`fun-pitjump-michi ${phase === 'scrolling' ? 'running' : 'jumping'}`}
           style={{ left: '120px', top: `${michiY}%` }}>
-          <div className="fun-michi-char">
-            <div className="fun-michi-head" />
-            <div className="fun-michi-body" />
-            <div className="fun-michi-legs">
-              <div className="fun-michi-leg left" />
-              <div className="fun-michi-leg right" />
-            </div>
-          </div>
+          <CharSprite anim={phase === 'scrolling' ? 'walk' : 'stand'} size={56} />
         </div>
 
         {/* Tap indicator */}
@@ -1566,6 +1580,7 @@ function RPGBattle({ boss, beaten, onWin, onBack }) {
 
       {phase === 'won' && (
         <motion.div className="fun-victory" initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
+          <CharSprite anim="victory" size={64} style={{ margin: '0 auto 0.5rem' }} />
           <p>🎉 VICTORY!</p>
           <p className="fun-reward">{boss.reward}</p>
           <div className="fun-loot">{boss.loot}</div>
@@ -1573,6 +1588,7 @@ function RPGBattle({ boss, beaten, onWin, onBack }) {
       )}
       {phase === 'lost' && (
         <div className="fun-center">
+          <CharSprite anim="hurt" size={64} style={{ margin: '0 auto 0.5rem' }} />
           <p>💀 Game Over!</p>
           <button className="fun-btn" onClick={retry}>🔄 Nochmal</button>
         </div>
@@ -2361,7 +2377,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
       <div className="fun-lvl-content" ref={shakeRef} style={{ position: 'relative' }}>
         <ParticleOverlay canvasRef={canvasRef} />
         <motion.div className="fun-center" initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
-          <div style={{ fontSize: '4rem' }}>🎉</div>
+          <CharSprite anim="victory" size={64} style={{ margin: '0 auto' }} />
           <h3 className="fun-gold-text">Kartenkampf gewonnen!</h3>
           <p>Besiegte Bosse: {bossStage + 1}/{DECK_BOSSES.length}</p>
           <button className="fun-btn fun-btn-small" onClick={() => resetRun(Math.max(0, initialBossStage))}>🔄 Nochmal</button>
@@ -2374,7 +2390,7 @@ function LevelDeckbuilder({ onComplete, godMode, initialBossStage = 0, onBossSta
   return (
     <div className="fun-lvl-content">
       <div className="fun-center">
-        <div style={{ fontSize: '3rem' }}>💀</div>
+        <CharSprite anim="hurt" size={64} style={{ margin: '0 auto' }} />
         <p>{currentBoss.name} hat gewonnen...</p>
         <button className="fun-btn" onClick={() => resetRun(Math.max(0, initialBossStage))}>🔄 Neues Deck versuchen</button>
       </div>
@@ -2758,14 +2774,7 @@ function LevelSurvivor({ onComplete, godMode }) {
             {/* Player */}
             <div className={`fun-survivor-player ${r.iframes > 0 ? 'hit' : ''}`}
               style={{ left: `${r.px * scale}%`, top: `${r.py * scale}%` }}>
-              <div className="fun-michi-char" style={{ transform: 'scale(1.5)' }}>
-                <div className="fun-michi-head" />
-                <div className="fun-michi-body" />
-                <div className="fun-michi-legs">
-                  <div className="fun-michi-leg left" />
-                  <div className="fun-michi-leg right" />
-                </div>
-              </div>
+              <CharSprite anim={r.iframes > 0 ? 'hurt' : 'walk'} size={48} />
             </div>
 
             {/* Enemies */}
@@ -3406,16 +3415,7 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
         return pos && (
           <div className={`fun-michi-sprite ${isWalking ? 'walking' : ''}`}
             style={{ left: `${pos.x}%`, top: `${pos.y}%` }}>
-            <div className={`fun-michi-bounce ${isWalking ? '' : 'idle'}`}>
-              <div className="fun-michi-char">
-                <div className="fun-michi-head" />
-                <div className="fun-michi-body" />
-                <div className="fun-michi-legs">
-                  <div className="fun-michi-leg left" />
-                  <div className="fun-michi-leg right" />
-                </div>
-              </div>
-            </div>
+            <CharSprite anim={isWalking ? 'walk' : 'stand'} size={40} />
           </div>
         )
       })()}
@@ -3463,16 +3463,8 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
             {michiPosNode && (
               <div className={`fun-stepper-michi ${michiWalking ? 'walking' : ''}`}
                 style={{ left: `${michiPosNode.x}%`, top: `${michiPosNode.y}%` }}>
-                <div className={`fun-michi-bounce ${michiWalking ? '' : 'idle'}`}>
-                  <div className="fun-michi-char">
-                    <div className="fun-michi-head" />
-                    <div className="fun-michi-body" />
-                    <div className="fun-michi-legs">
-                      <div className="fun-michi-leg left" />
-                      <div className="fun-michi-leg right" />
-                    </div>
-                  </div>
-                </div>
+                <CharSprite anim={michiWalking ? 'walk' : 'stand'} size={32} />
+              </div>
               </div>
             )}
             {/* Position dot */}
@@ -4010,4 +4002,5 @@ function FunModeInner({ onBack }) {
     </div>
   )
 }
+
 
