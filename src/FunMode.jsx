@@ -14,6 +14,8 @@ const CHAR_SPRITES = {
   hurt: [`${CH}Character%20hurt.png`, `${CH}Character%20hurt%202.png`, `${CH}Character%20hurt%203.png`, `${CH}Character%20hurt%204.png`],
   interact: [`${CH}Character%20interact.png`, `${CH}Character%20interact%202.png`, `${CH}Character%20interact%203.png`],
   jump: [`${CH}Character%20jump.png`, `${CH}Character%20jump%202.png`, `${CH}Character%20jump%203.png`, `${CH}Character%20jump%204.png`],
+  fall: [`${CH}Character%20hurt%202.png`],
+  land: [`${CH}Character%20hurt.png`],
 }
 
 // Preload all character sprite images
@@ -743,7 +745,7 @@ function LevelPitJump({ onComplete, highScore, godMode }) {
         // Start falling
         s.phase = 'falling'
         s.vy = 20
-        setPhase('airborne')
+        setPhase('falling')
       } else {
         // Float with gentle bobbing based on recent taps
         s.dist += SCROLL_SPEED * 0.4 * dt
@@ -850,11 +852,11 @@ function LevelPitJump({ onComplete, highScore, godMode }) {
         {/* Michi sprite - fixed at center screen */}
         <div className={`fun-pitjump-michi ${phase === 'scrolling' ? 'running' : 'jumping'}`}
           style={{ left: '120px', top: `${michiY}%` }}>
-          <CharSprite anim={phase === 'scrolling' ? 'walk' : 'jump'} size={56} />
+          <CharSprite anim={phase === 'scrolling' ? 'walk' : phase === 'falling' ? 'fall' : phase === 'done' ? 'land' : 'jump'} size={56} />
         </div>
 
         {/* Tap indicator */}
-        {(phase === 'tapping' || phase === 'airborne') && (
+        {(phase === 'tapping' || phase === 'falling') && (
           <div className="fun-pitjump-power">
             <div className="fun-pitjump-power-label">
               {phase === 'tapping' ? '👆 SCHNELL KLICKEN!' : '💨 Fällt...'}
