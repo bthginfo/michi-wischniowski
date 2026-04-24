@@ -3466,7 +3466,6 @@ function WorldMap({ progress, onEnterLevel, michiPos, onMoveToNode, walkingTo, p
                 style={{ left: `${michiPosNode.x}%`, top: `${michiPosNode.y}%` }}>
                 <CharSprite anim={michiWalking ? 'walk' : 'stand'} size={32} />
               </div>
-              </div>
             )}
             {/* Position dot */}
             <div className="fun-stepper-dot" style={{ left: `${stepperNode.x}%`, top: `${stepperNode.y}%` }} />
