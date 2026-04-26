@@ -14,15 +14,87 @@ function cors(res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
 }
 
+// Default seed data (matches hardcoded values in App.jsx)
+const SEED_DATA = {
+  filmography: {
+    Theater: [
+      { year: '2026', title: 'Frau Yamamoto ist noch da', role: 'Nino', director: 'Alina Fluck', house: 'Theater Osnabrück' },
+      { year: '2025', title: 'fünf minuten stille', role: '3', director: 'Anna Werner', house: 'Theater Osnabrück' },
+      { year: '2025', title: 'Ödipus Exzellenz', role: 'Generalvikar', director: 'Lorenz Nolting, Sofie Boiten, Karl Haucke', house: 'Theater Osnabrück' },
+      { year: '2025', title: 'Drei Winter', role: 'Marko Horvath', director: 'Kathrin Mayr', house: 'Theater Osnabrück' },
+      { year: '2025', title: 'Sonne / Luft / Asche', role: 'Luft / Asche', director: 'Christian Schlüter', house: 'Theater Osnabrück' },
+      { year: '2024–25', title: 'Kohlhaas (Glück der Erde, Rücken der Pferde)', role: 'Das Pferd', director: 'Lorenz Nolting', house: 'Theater Osnabrück' },
+      { year: '2024', title: 'Der große Gatsby', role: 'Jay Gatsby', director: 'Julia Prechsl', house: 'Theater Osnabrück' },
+      { year: '2023–24', title: 'Draußen vor der Tür', role: 'Beckmann', director: 'Philipp Preuss', house: 'Saarl. Staatstheater' },
+      { year: '2023–24', title: '#Peep!', role: 'Puppe zum halben Preis', director: 'Mona Sabaschus', house: 'Saarl. Staatstheater' },
+      { year: '2023–24', title: 'Die Bettwurst - Das Musical', role: 'Weihnachtsbaum', director: 'Paul Spittler', house: 'Saarl. Staatstheater' },
+      { year: '2023', title: 'Hamlet', role: 'Hamlet', director: 'Bettina Bruinier', house: 'Saarl. Staatstheater' },
+      { year: '2022', title: 'Die Ratten', role: 'Bruno', director: 'Julia Prechsl', house: 'Saarl. Staatstheater' },
+      { year: '2022', title: 'Jedermann.Bliesgau', role: 'Tod | Guter Gesell', director: 'Bettina Bruinier', house: 'Saarl. Staatstheater' },
+      { year: '2022', title: 'Der große Gatsby', role: 'Nick Carraway', director: 'Bettina Bruinier', house: 'Saarl. Staatstheater' },
+      { year: '2021–22', title: 'Spieler und Tod', role: 'Tod', director: 'Thorsten Köhler', house: 'Saarl. Staatstheater' },
+      { year: '2020–22', title: 'Trüffel Trüffel Trüffel', role: 'Frédéric Ratinois', director: 'Julia Prechsl', house: 'Saarl. Staatstheater' },
+      { year: '2021', title: 'Der Besuch der alten Dame', role: 'Pfarrer', director: 'Gustav Rueb', house: 'Saarl. Staatstheater' },
+      { year: '2021', title: 'Der Geizige', role: 'Mariane', director: 'Matthias Rippert', house: 'Saarl. Staatstheater' },
+      { year: '2019–20', title: 'Hoffnung', role: 'Egon Starck', director: 'Krzystof Minkowski', house: 'Saarl. Staatstheater' },
+      { year: '2019–20', title: 'Frühlings Erwachen', role: 'Melchior Gabor', director: 'Magali Tosato', house: 'Saarl. Staatstheater' },
+      { year: '2019', title: 'Dosenfleisch', role: 'Rolf', director: 'Niklas Ritter', house: 'Saarl. Staatstheater' },
+      { year: '2018–19', title: 'Der Streit', role: 'Adine', director: 'Matthias Rippert', house: 'Saarl. Staatstheater' },
+      { year: '2018–19', title: 'Das achte Leben (für Brilka)', role: 'Simon | Ramas | Andro | Miqa | Vaso | Lascha', director: 'Bettina Bruinier', house: 'Saarl. Staatstheater' },
+      { year: '2018', title: 'Dantons Tod', role: 'Camille Desmoulins', director: 'Christoph Mehler', house: 'Saarl. Staatstheater' },
+      { year: '2018', title: 'Wir sind die Guten', role: 'Soldat ohne Kopf | Brian', director: 'Bettina Bruinier', house: 'Saarl. Staatstheater' },
+      { year: '2017–18', title: 'Der Große Preis - Songs für Europa', role: 'Italien', director: 'Thorsten Köhler', house: 'Saarl. Staatstheater' },
+      { year: '2017', title: 'Kabale und Liebe', role: 'Ferdinand', director: 'Achim Lenz', house: 'Gandersheimer Domfestspiele' },
+      { year: '2016–17', title: 'Die Borderline Prozession', role: 'Mann im Auto | Soldat | Lolita', director: 'Kay Voges', house: 'Schauspiel Dortmund' },
+      { year: '2015–16', title: 'Der Impresario von Smyrna', role: 'Maccario', director: 'Marco Massafra', house: 'Schauspielhaus Bochum' },
+      { year: '2016', title: 'Preparadise sorry now', role: 'Andere Rollen', director: 'Anne-Kathrine Münnich', house: 'Folkwang Theaterzentrum' },
+    ],
+    'Film / TV': [
+      { year: '2016', title: 'Restless', role: 'Vincent', director: 'Julia Schubeius', house: 'FH Dortmund' },
+    ],
+    Audio: [
+      { year: '2017–18', title: 'Weltenbummler und Meisterdiebe', role: 'Fanta', director: 'Stefan Oberle', house: '' },
+    ],
+  },
+  awards: [
+    { year: '2023', title: 'SponsorClubPreis' },
+    { year: '2017', title: 'Einladung Berliner Theatertreffen' },
+  ],
+  skills: {
+    Sprachen: [
+      { name: 'Deutsch', level: 'Muttersprache', pro: true },
+      { name: 'Polnisch', level: '', pro: true },
+      { name: 'Englisch', level: '', pro: true },
+    ],
+    Gesang: [
+      { name: 'Musical', level: '', pro: true },
+      { name: 'Pop', level: '', pro: true },
+      { name: 'Rap', level: '', pro: true },
+    ],
+    Sport: [
+      { name: 'Fechten (Bühne)', level: '', pro: true },
+      { name: 'Handball', level: '' },
+      { name: 'Tanzsport', level: '' },
+    ],
+    Sonstiges: [
+      { name: 'Stimmlage: Bariton', level: '', pro: true },
+      { name: 'Führerschein Klasse B', level: '' },
+    ],
+  },
+}
+
 export default async function handler(req, res) {
   cors(res)
   if (req.method === 'OPTIONS') return res.status(200).end()
 
   try {
-    // GET: public, no auth needed
+    // GET: public, no auth needed — auto-seed if empty
     if (req.method === 'GET') {
-      const data = await redis.get(VITA_KEY)
-      if (!data) return res.status(200).json(null)
+      let data = await redis.get(VITA_KEY)
+      if (!data) {
+        await redis.set(VITA_KEY, SEED_DATA)
+        data = SEED_DATA
+      }
       return res.status(200).json(data)
     }
 
