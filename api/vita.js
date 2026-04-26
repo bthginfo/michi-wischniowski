@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     // POST: requires admin password
     if (req.method === 'POST') {
       const auth = req.headers.authorization
-      if (!ADMIN_PW || auth !== Bearer +ADMIN_PW) {
+      if (!ADMIN_PW || auth !== 'Bearer ' + ADMIN_PW) {
         return res.status(401).json({ error: 'Falsches Passwort' })
       }
 
