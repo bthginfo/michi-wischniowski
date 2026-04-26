@@ -91,7 +91,7 @@ export default async function handler(req, res) {
     // GET: public, no auth needed — auto-seed if empty
     if (req.method === 'GET') {
       let data = await redis.get(VITA_KEY)
-      if (!data) {
+      if (!data || !data.filmography) {
         await redis.set(VITA_KEY, SEED_DATA)
         data = SEED_DATA
       }
@@ -163,7 +163,10 @@ export default async function handler(req, res) {
         }
       }
 
-      // Merge with existing data
+      // Merge with existing data (skip if nothing to update)
+      if (Object.keys(cleanData).length === 0) {
+        return res.status(200).json({ ok: true })
+      }
       const existing = await redis.get(VITA_KEY) || {}
       const merged = { ...existing, ...cleanData }
       await redis.set(VITA_KEY, merged)
