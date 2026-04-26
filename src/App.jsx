@@ -1,8 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import FunMode from './FunMode'
 import './funmode.css'
+
+const VitaAdmin = lazy(() => import('./VitaAdmin'))
 
 const IK = 'https://ik.imagekit.io/iu69j6qea/MW/'
 
@@ -261,6 +263,23 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('Theater')
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [vitaData, setVitaData] = useState(null)
+
+  // Check for admin route
+  if (typeof window !== 'undefined' && window.location.pathname === '/admin') {
+    return <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', color: '#888' }}>Lade Admin...</div>}><VitaAdmin /></Suspense>
+  }
+
+  // Fetch vita data from API (falls back to hardcoded constants)
+  useEffect(() => {
+    fetch('/api/vita').then(r => r.json()).then(data => {
+      if (data && data.filmography) setVitaData(data)
+    }).catch(() => {})
+  }, [])
+
+  const filmography = vitaData?.filmography || FILMOGRAPHY
+  const awards = vitaData?.awards || AWARDS
+  const skillsData = vitaData?.skills || SKILLS_DATA
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80)
@@ -426,7 +445,7 @@ export default function App() {
         <FadeIn delay={0.05}>
           <div className="awards-block">
             <h3 className="heading-sm">Auszeichnungen</h3>
-            {AWARDS.map((a, i) => (
+            {awards.map((a, i) => (
               <div className="award-row" key={i}>
                 <span className="award-year">{a.year}</span>
                 <strong>{a.title}</strong>
@@ -438,9 +457,9 @@ export default function App() {
         {/* Filmography tabs */}
         <FadeIn delay={0.1}>
           <div className="career-tabs">
-            {Object.keys(FILMOGRAPHY).map(tab => (
+            {Object.keys(filmography).map(tab => (
               <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>
-                {tab}<span className="tab-count">{FILMOGRAPHY[tab].length}</span>
+                {tab}<span className="tab-count">{filmography[tab].length}</span>
               </button>
             ))}
           </div>
@@ -448,7 +467,7 @@ export default function App() {
         <AnimatePresence mode="wait">
           <motion.div key={activeTab} className="career-list"
             initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.3 }}>
-            {FILMOGRAPHY[activeTab].map((item, i) => (
+            {(filmography[activeTab] || []).map((item, i) => (
               <motion.div className="career-item" key={i}
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.02 }}>
                 <span className="career-year">{item.year}</span>
@@ -467,7 +486,7 @@ export default function App() {
       <section id="skills" className="section section-dark">
         <FadeIn><span className="label">Skills</span><h2 className="heading-lg">Was ich kann.<br /><em>(Und was ich behaupte.)</em></h2></FadeIn>
         <div className="skills-grid">
-          {Object.entries(SKILLS_DATA).map(([cat, items], ci) => (
+          {Object.entries(skillsData).map(([cat, items], ci) => (
             <FadeIn key={cat} delay={ci * 0.05}>
               <div className="skill-card">
                 <h3>{cat}</h3>
@@ -510,3 +529,4 @@ export default function App() {
     </div>
   )
 }
+
